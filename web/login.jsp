@@ -45,10 +45,11 @@
                             </div>
                             <div><%
                                 String msg = (String) request.getAttribute("ERROR");
-                                if (msg != null)
+                                if (msg != null){
                                     out.print("<p style='color: red'>");
                                     out.print(msg);
                                     out.print("</p>");
+                                }
                                 %></div>
                             <div class="field btn">
                                 <div class="btn-layer"></div>
