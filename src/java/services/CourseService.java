@@ -57,7 +57,7 @@ public class CourseService {
                         String ImageURL = table.getString("ImageURL");
                         String TeacherID = table.getString("TeacherID");
                         String NumberEnrolled = table.getString("NumberEnrolled");
-                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures);
+                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled);
                         list.add(c);
                     }
                 }
@@ -66,5 +66,49 @@ public class CourseService {
 
         }
         return list;
+    }
+
+    public Course getCourse(String CourseID) {
+        Connection cn = null;
+        Course c = null;
+        try {
+            cn = DBUtils.getConnection();
+            String sql = "/****** Script for SelectTopNRows command from SSMS  ******/\n"
+                    + "SELECT [CourseID]\n"
+                    + "      ,[CourseName]\n"
+                    + "      ,[Description]\n"
+                    + "      ,[TuitionFee]\n"
+                    + "      ,[TotalLectures]\n"
+                    + "      ,[StartDate]\n"
+                    + "      ,[Schedule]\n"
+                    + "      ,[StudyTime]\n"
+                    + "      ,[ImageURL]\n"
+                    + "      ,[TeacherID]\n"
+                    + "      ,[NumberEnrolled]\n"
+                    + "  FROM [OnlineCourseDB].[dbo].[Course]\n"
+                    + "  where CourseID=?"; //Câu sql để gửi xuống
+            PreparedStatement st = cn.prepareStatement(sql);
+            st.setString(1, CourseID);//truyền tham số vào
+            ResultSet table = st.executeQuery();//lưu bảng lấy được
+            if (table != null) {
+                while (table.next()) {
+                    String courseID = table.getString("CourseID");
+                    String CourseName = table.getString("CourseName");
+                    String Description = table.getString("Description");
+                    String TuitionFee = table.getString("TuitionFee");
+                    String TotalLectures = table.getString("TotalLectures");
+                    String StartDate = table.getString("StartDate");
+                    String Schedule = table.getString("Schedule");
+                    String StudyTime = table.getString("StudyTime");
+                    String ImageURL = table.getString("ImageURL");
+                    String TeacherID = table.getString("TeacherID");
+                    String NumberEnrolled = table.getString("NumberEnrolled");
+                    c = new Course(courseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled);
+                }
+            }
+        } catch (Exception e) {
+        }
+
+        return c;
     }
 }

@@ -13,7 +13,7 @@
     <div>
         <div class="taskBar">
             <div class="taskBar_menu">
-                <a class="taskBar_menu_btn" href="index.jsp">Home</a>
+                <a class="taskBar_menu_btn" href="GetCoursesController">Home</a>
             </div>
             <div class="taskBar_search"></div>
             <div class="taskBar_signUp_login"></div>

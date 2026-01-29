@@ -19,11 +19,12 @@ public class Course {
     private String Schedule;
     private String StartDate;
     private String TotalLectures;
+    private String NumberEnroller;
 
     public Course() {
     }
 
-    public Course(String CourseID, String CourseName, String Description, String TuitionFee, String TeacherID, String ImageURL, String StudyTime, String Schedule, String StartDate, String TotalLectures) {
+    public Course(String CourseID, String CourseName, String Description, String TuitionFee, String TeacherID, String ImageURL, String StudyTime, String Schedule, String StartDate, String TotalLectures, String NumberEnroller) {
         this.CourseID = CourseID;
         this.CourseName = CourseName;
         this.Description = Description;
@@ -34,6 +35,7 @@ public class Course {
         this.Schedule = Schedule;
         this.StartDate = StartDate;
         this.TotalLectures = TotalLectures;
+        this.NumberEnroller = NumberEnroller;
     }
 
     public String getCourseID() {
@@ -115,5 +117,15 @@ public class Course {
     public void setTotalLectures(String TotalLectures) {
         this.TotalLectures = TotalLectures;
     }
+
+    public String getNumberEnroller() {
+        return NumberEnroller;
+    }
+
+    public void setNumberEnroller(String NumberEnroller) {
+        this.NumberEnroller = NumberEnroller;
+    }
+
+    
     
 }
