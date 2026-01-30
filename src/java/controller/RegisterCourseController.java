@@ -40,15 +40,15 @@ public class RegisterCourseController extends HttpServlet {
             String studentID = user.getEmail();
             String courseID = request.getParameter("courseid");
 
-                //gọi xuống service để lấy danh sách môn
-                EnrollmentService e = new EnrollmentService();
-                String resultMess = e.registerCourse(studentID, courseID);
-                
-                //Gửi thông báo kết quả ra màn hình
-                request.setAttribute("NOTIFICATION", resultMess);
-                
-                //// Quay lại đúng cái trang chi tiết khóa học đó
-                request.getRequestDispatcher("GetCourse" + courseID).forward(request, response); 
+            //gọi xuống service để lấy danh sách môn
+            EnrollmentService e = new EnrollmentService();
+            String resultMess = e.registerCourse(studentID, courseID);
+
+            //Gửi thông báo kết quả ra màn hình
+            request.setAttribute("NOTIFICATION", resultMess);
+
+            //// Quay lại đúng cái trang chi tiết khóa học đó
+            request.getRequestDispatcher("GetCourse" + courseID).forward(request, response);
         }
         catch(Exception e){
             e.printStackTrace();

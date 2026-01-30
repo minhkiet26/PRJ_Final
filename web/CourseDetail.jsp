@@ -56,7 +56,7 @@
                 <div class="card-body">
                     <div class="price-tag"><%= c.getTuitionFee() %> đ</div>
 
-                    <a href="RegisterController<%= c.getCourseID() %>" class="btn-register">
+                    <a href="RegisterController" class="btn-register">
                         Đăng Ký Học
                     </a>
 
