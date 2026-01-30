@@ -38,12 +38,8 @@ public class RegisterCourseController extends HttpServlet {
         User user = (User)session.getAttribute("LOGIN_USER");
         try{
             String studentID = user.getEmail();
-            String cidStr = request.getParameter("txtcourseID");
-//            Hàm Integer.parseInt rất "khó tính". Nếu txtcourseID bị null hoặc là chữ cái (ví dụ "abc"), 
-//            nó sẽ ném ra lỗi NumberFormatException. Vì vậy, để an toàn tuyệt đối, 
-//            nên kiểm tra null trước hoặc để nó trong khối try-catch .
-            if(cidStr != null && !cidStr.isEmpty()){
-                int courseID = Integer.parseInt(cidStr);
+            String courseID = request.getParameter("courseid");
+
                 //gọi xuống service để lấy danh sách môn
                 EnrollmentService e = new EnrollmentService();
                 String resultMess = e.registerCourse(studentID, courseID);
@@ -52,9 +48,9 @@ public class RegisterCourseController extends HttpServlet {
                 request.setAttribute("NOTIFICATION", resultMess);
                 
                 //// Quay lại đúng cái trang chi tiết khóa học đó
-                request.getRequestDispatcher("GetCourse" + courseID).forward(request, response);
-            }   
-        }catch(Exception e){
+                request.getRequestDispatcher("GetCourse" + courseID).forward(request, response); 
+        }
+        catch(Exception e){
             e.printStackTrace();
         }
     }

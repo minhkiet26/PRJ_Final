@@ -15,7 +15,7 @@ import mylib.DBUtils;
  * @author ACER
  */
 public class EnrollmentService {
-    public String registerCourse(String studentID, int courseID){
+    public String registerCourse(String studentID, String courseID){
         Connection cn = null;
         try{
             //Ket noi DB
@@ -27,7 +27,7 @@ public class EnrollmentService {
                                 "from Course\n" +
                                 "where CourseID = ? ";
                 PreparedStatement stCheck = cn.prepareStatement(checksql1);
-                stCheck.setInt(1, courseID);
+                stCheck.setString(1, courseID);
                 ResultSet table = stCheck.executeQuery();
                 if(table.next()){
                     String schedule = table.getString("Schedule");
@@ -45,7 +45,7 @@ public class EnrollmentService {
                                     "where StudentID = ? and CourseID = ?";
                 PreparedStatement stCheck2 = cn.prepareStatement(checksql2);
                 stCheck2.setString(1, studentID);
-                stCheck2.setInt(2, courseID);
+                stCheck2.setString(2, courseID);
                 ResultSet table2 = stCheck2.executeQuery();
                 if(table2.next()){
                     //Neu tim thay du lieu => da dang ky mon nay roi
@@ -59,7 +59,7 @@ public class EnrollmentService {
                 //chuan bi de gui xuong sql
                 PreparedStatement stInsert = cn.prepareStatement(sql);
                 stInsert.setString(1, studentID);
-                stInsert.setInt(2, courseID);
+                stInsert.setString(2, courseID);
                 //Gui cau sql di va luu du lieu tu DB vao table
                 //Chi dung cho nhung hanh dong "Thay doi du lieu": Insert, Update, Delete
                 int check = stInsert.executeUpdate();     
