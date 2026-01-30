@@ -21,10 +21,11 @@ public class Course {
     private String TotalLectures;
     private int NumberEnrolled;
 
+
     public Course() {
     }
 
-    public Course(int CourseID, String CourseName, String Description, String TuitionFee, String TeacherID, String ImageURL, String StudyTime, String Schedule, String StartDate, String TotalLectures,int NumberEnrolled) {
+    public Course(int CourseID, String CourseName, String Description, String TuitionFee, String TeacherID, String ImageURL, String StudyTime, String Schedule, String StartDate, String TotalLectures, int NumberEnrolled) {
         this.CourseID = CourseID;
         this.CourseName = CourseName;
         this.Description = Description;
@@ -37,6 +38,7 @@ public class Course {
         this.TotalLectures = TotalLectures;
         this.NumberEnrolled = NumberEnrolled;
     }
+    
 
     public int getCourseID() {
         return CourseID;
@@ -125,5 +127,5 @@ public class Course {
     public void setNumberEnrolled(int NumberEnrolled) {
         this.NumberEnrolled = NumberEnrolled;
     }
-    
+
 }
