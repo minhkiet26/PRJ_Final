@@ -46,7 +46,7 @@ public class CourseService {
                 //đọc table lấy từng thành phần, tạo obj, lưu vào list gửi lên trên
                 if (table != null) {
                     while (table.next()) {
-                        int CourseID = table.getInt("CourseID");
+                        String CourseID = table.getString("CourseID");
                         String CourseName = table.getString("CourseName");
                         String Description = table.getString("Description");
                         String TuitionFee = table.getString("TuitionFee");
@@ -56,7 +56,7 @@ public class CourseService {
                         String StudyTime = table.getString("StudyTime");
                         String ImageURL = table.getString("ImageURL");
                         String TeacherID = table.getString("TeacherID");
-                       int NumberEnrolled = table.getInt("NumberEnrolled");
+                        String NumberEnrolled = table.getString("NumberEnrolled");
 
                         Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled);
                         list.add(c);
@@ -93,7 +93,7 @@ public class CourseService {
             ResultSet table = st.executeQuery();//lưu bảng lấy được
             if (table != null) {
                 while (table.next()) {
-                    int courseID = table.getInt("CourseID");
+                    String courseID = table.getString("CourseID");
                     String CourseName = table.getString("CourseName");
                     String Description = table.getString("Description");
                     String TuitionFee = table.getString("TuitionFee");
@@ -103,7 +103,7 @@ public class CourseService {
                     String StudyTime = table.getString("StudyTime");
                     String ImageURL = table.getString("ImageURL");
                     String TeacherID = table.getString("TeacherID");
-                    int NumberEnrolled = table.getInt("NumberEnrolled");
+                    String NumberEnrolled = table.getString("NumberEnrolled");
                     c = new Course(courseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled);
                 }
             }

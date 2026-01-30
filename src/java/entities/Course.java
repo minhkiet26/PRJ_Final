@@ -9,7 +9,7 @@ package entities;
  * @author Admin
  */
 public class Course {
-    private int CourseID;
+    private String CourseID;
     private String CourseName;
     private String Description;
     private String TuitionFee;
@@ -19,13 +19,13 @@ public class Course {
     private String Schedule;
     private String StartDate;
     private String TotalLectures;
-    private int NumberEnrolled;
+    private String NumberEnrolled;
 
 
     public Course() {
     }
 
-    public Course(int CourseID, String CourseName, String Description, String TuitionFee, String TeacherID, String ImageURL, String StudyTime, String Schedule, String StartDate, String TotalLectures, int NumberEnrolled) {
+    public Course(String CourseID, String CourseName, String Description, String TuitionFee, String TeacherID, String ImageURL, String StudyTime, String Schedule, String StartDate, String TotalLectures, String NumberEnrolled) {
         this.CourseID = CourseID;
         this.CourseName = CourseName;
         this.Description = Description;
@@ -40,11 +40,11 @@ public class Course {
     }
     
 
-    public int getCourseID() {
+    public String getCourseID() {
         return CourseID;
     }
 
-    public void setCourseID(int CourseID) {
+    public void setCourseID(String CourseID) {
         this.CourseID = CourseID;
     }
 
@@ -76,7 +76,7 @@ public class Course {
         return TeacherID;
     }
 
-    public int getNumberEnrolled() {
+    public String getNumberEnrolled() {
         return NumberEnrolled;
     }
 
@@ -124,7 +124,7 @@ public class Course {
         this.TotalLectures = TotalLectures;
     }
 
-    public void setNumberEnrolled(int NumberEnrolled) {
+    public void setNumberEnrolled(String NumberEnrolled) {
         this.NumberEnrolled = NumberEnrolled;
     }
 

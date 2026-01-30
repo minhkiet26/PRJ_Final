@@ -35,13 +35,13 @@ public class LoginController extends HttpServlet {
                     //Lưu kết quả vào session để sau này còn sử sụng
                     HttpSession session = request.getSession();
                     session.setAttribute("LOGIN_USER", s);
-                    request.getRequestDispatcher("GetCourseController.jsp").forward(request, response);
+                    request.getRequestDispatcher("GetCoursesController").forward(request, response);
                 } else {
                     Teacher t = Us.getTeacher(email);
                     //Lưu kết quả vào session để sau này còn sử sụng
                     HttpSession session = request.getSession();
                     session.setAttribute("LOGIN_USER", t);
-                    request.getRequestDispatcher("GetCourseController.jsp").forward(request, response);
+                    request.getRequestDispatcher("GetCoursesController").forward(request, response);
                 }
             } else {
                 String error = "Wrong Email or Password";//thông báo lỗi

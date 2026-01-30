@@ -65,7 +65,7 @@
                         <li><span class="info-label">Lịch học</span> <span class="info-value"><%= c.getSchedule() %></span></li>
                         <li><span class="info-label">Giờ học</span> <span class="info-value"><%= c.getStudyTime() %></span></li>
                         <li><span class="info-label">Số bài giảng</span> <span class="info-value"><%= c.getTotalLectures() %></span></li>
-                        <li><span class="info-label">Học viên</span> <span class="info-value"><%= c.getNumberEnroller()%></span></li>
+                        <li><span class="info-label">Học viên</span> <span class="info-value"><%= c.getNumberEnrolled()%></span></li>
                         <li><span class="info-label">Giảng viên</span> <span class="info-value"><%= c.getTeacherID() %></span></li>
                     </ul>
 

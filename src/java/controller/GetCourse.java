@@ -22,8 +22,7 @@ public class GetCourse extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try{
-            String CourseID = request.getParameter("courseid");//lấy id cần
-            System.out.println(CourseID);
+            String CourseID = request.getParameter("courseid");//lấy id cần           
             CourseService d = new CourseService();
             Course c = d.getCourse(CourseID);
             //lưu vào req
