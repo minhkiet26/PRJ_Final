@@ -9,7 +9,7 @@ package entities;
  * @author Admin
  */
 public class Course {
-    private String CourseID;
+    private int CourseID;
     private String CourseName;
     private String Description;
     private String TuitionFee;
@@ -19,11 +19,12 @@ public class Course {
     private String Schedule;
     private String StartDate;
     private String TotalLectures;
+    private int NumberEnrolled;
 
     public Course() {
     }
 
-    public Course(String CourseID, String CourseName, String Description, String TuitionFee, String TeacherID, String ImageURL, String StudyTime, String Schedule, String StartDate, String TotalLectures) {
+    public Course(int CourseID, String CourseName, String Description, String TuitionFee, String TeacherID, String ImageURL, String StudyTime, String Schedule, String StartDate, String TotalLectures,int NumberEnrolled) {
         this.CourseID = CourseID;
         this.CourseName = CourseName;
         this.Description = Description;
@@ -34,13 +35,14 @@ public class Course {
         this.Schedule = Schedule;
         this.StartDate = StartDate;
         this.TotalLectures = TotalLectures;
+        this.NumberEnrolled = NumberEnrolled;
     }
 
-    public String getCourseID() {
+    public int getCourseID() {
         return CourseID;
     }
 
-    public void setCourseID(String CourseID) {
+    public void setCourseID(int CourseID) {
         this.CourseID = CourseID;
     }
 
@@ -70,6 +72,10 @@ public class Course {
 
     public String getTeacherID() {
         return TeacherID;
+    }
+
+    public int getNumberEnrolled() {
+        return NumberEnrolled;
     }
 
     public void setTeacherID(String TeacherID) {
@@ -114,6 +120,10 @@ public class Course {
 
     public void setTotalLectures(String TotalLectures) {
         this.TotalLectures = TotalLectures;
+    }
+
+    public void setNumberEnrolled(int NumberEnrolled) {
+        this.NumberEnrolled = NumberEnrolled;
     }
     
 }

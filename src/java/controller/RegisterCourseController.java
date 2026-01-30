@@ -1,0 +1,101 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
+package controller;
+
+import entities.User;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import services.EnrollmentService;
+
+/**
+ *
+ * @author ACER
+ */
+@WebServlet(name = "RegisterCourse", urlPatterns = {"/RegisterCourse"})
+public class RegisterCourseController extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("LOGIN_USER");
+        try{
+            String studentID = user.getEmail();
+            String cidStr = request.getParameter("txtcourseID");
+//            Hàm Integer.parseInt rất "khó tính". Nếu txtcourseID bị null hoặc là chữ cái (ví dụ "abc"), 
+//            nó sẽ ném ra lỗi NumberFormatException. Vì vậy, để an toàn tuyệt đối, 
+//            nên kiểm tra null trước hoặc để nó trong khối try-catch .
+            if(cidStr != null && !cidStr.isEmpty()){
+                int courseID = Integer.parseInt(cidStr);
+                //gọi xuống service để lấy danh sách môn
+                EnrollmentService e = new EnrollmentService();
+                String resultMess = e.registerCourse(studentID, courseID);
+                
+                //Gửi thông báo kết quả ra màn hình
+                request.setAttribute("NOTIFICATION", resultMess);
+                
+                //// Quay lại đúng cái trang chi tiết khóa học đó
+                request.getRequestDispatcher("").forward(request, response);
+            }   
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}
