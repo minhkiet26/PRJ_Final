@@ -56,9 +56,13 @@
                 <div class="card-body">
                     <div class="price-tag"><%= c.getTuitionFee() %> đ</div>
 
-                    <a href="RegisterController" class="btn-register">
-                        Đăng Ký Học
-                    </a>
+                    <form action="RegisterCourseController" method="post">
+                        <input type="hidden" name="courseid" value="<%= c.getCourseID()%>">
+                        
+                        <button type="submit" class="btn-register"> 
+                            Đăng ký khóa học
+                        </button>
+                    </form>
 
                     <ul class="info-list">
                         <li><span class="info-label">Khai giảng</span> <span class="info-value"><%= c.getStartDate() %></span></li>
@@ -88,6 +92,21 @@
     <% 
         } 
     %>
+<!--    Hien thi thong bao khi bam nut dang ky mon hoc-->
+    <%
+            // Lấy thông báo từ Controller gửi sang
+            String msg = (String) request.getAttribute("NOTIFICATION");
+
+            // Nếu có thông báo (Khác null) và không rỗng
+            if (msg != null && !msg.isEmpty()) {
+        %>
+        <script>
+            // Lệnh này sẽ bật một cửa sổ thông báo nhỏ trên trình duyệt
+            alert("<%= msg%>");
+        </script>
+        <%
+            }
+        %>
 
 </body>
 </html>

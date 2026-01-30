@@ -4,6 +4,8 @@
  */
 package controller;
 
+import entities.Course;
+import entities.Student;
 import entities.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,7 +21,7 @@ import services.EnrollmentService;
  *
  * @author ACER
  */
-@WebServlet(name = "RegisterCourse", urlPatterns = {"/RegisterCourse"})
+@WebServlet(name = "RegisterCourseController", urlPatterns = {"/RegisterCourseController"})
 public class RegisterCourseController extends HttpServlet {
 
     /**
@@ -34,13 +36,19 @@ public class RegisterCourseController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        User user = (User)session.getAttribute("LOGIN_USER");
-        try{
-            String studentID = user.getEmail();
+
+        try {
+            HttpSession session = request.getSession();
+            Student student = (Student) session.getAttribute("LOGIN_USER");
+
+            if (student == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+            String studentID = student.getStudentID();
             String courseID = request.getParameter("courseid");
 
-            //gọi xuống service để lấy danh sách môn
+            //gọi xuống service 
             EnrollmentService e = new EnrollmentService();
             String resultMess = e.registerCourse(studentID, courseID);
 
@@ -48,9 +56,8 @@ public class RegisterCourseController extends HttpServlet {
             request.setAttribute("NOTIFICATION", resultMess);
 
             //// Quay lại đúng cái trang chi tiết khóa học đó
-            request.getRequestDispatcher("GetCourse" + courseID).forward(request, response);
-        }
-        catch(Exception e){
+            request.getRequestDispatcher("GetCourse").forward(request, response);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
