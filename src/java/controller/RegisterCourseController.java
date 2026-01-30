@@ -52,7 +52,7 @@ public class RegisterCourseController extends HttpServlet {
                 request.setAttribute("NOTIFICATION", resultMess);
                 
                 //// Quay lại đúng cái trang chi tiết khóa học đó
-                request.getRequestDispatcher("").forward(request, response);
+                request.getRequestDispatcher("GetCourse" + courseID).forward(request, response);
             }   
         }catch(Exception e){
             e.printStackTrace();
