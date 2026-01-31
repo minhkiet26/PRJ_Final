@@ -30,7 +30,8 @@ public class LoginController extends HttpServlet {
             UserServices Us = new UserServices();
             String roleCheck = Us.getUser(email, password);
             if (roleCheck != null) {
-                if ("Student".equals(roleCheck)) {
+                if ("Admin".equals(roleCheck)) {
+                } else if ("Student".equals(roleCheck)) {
                     Student s = Us.getStudent(email);
                     //Lưu kết quả vào session để sau này còn sử sụng
                     HttpSession session = request.getSession();
