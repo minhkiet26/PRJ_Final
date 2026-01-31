@@ -12,6 +12,10 @@
         <servlet-name>GetCourse</servlet-name>
         <servlet-class>controller.GetCourse</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>controller.LogoutController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetCoursesController</servlet-name>
         <url-pattern>/GetCoursesController</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>GetCourse</servlet-name>
         <url-pattern>/GetCourse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/LogoutController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

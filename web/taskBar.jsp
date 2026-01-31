@@ -1,10 +1,12 @@
 
+<%@page import="entities.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="stylesheet" href="taskBar.css"/>
     </head>
     <body>
@@ -21,6 +23,7 @@
                             <a href="#"> Khóa học</a>
                             <a href="#"> Giảng viên</a>
                             <a href="#"> Thông tin cá nhân</a>
+                            <a href="LogoutController">Đăng xuất</a> //khi làm hiển thị thông tin người dùng hãy đem thẻ a này qua đó
                         </div>
                     </div>
                     <div id="myOverlay" class="overlay" onclick="closeNav()"></div>
@@ -39,14 +42,27 @@
                     </div>
                 </div>
 
-                <div class="taskBar_signUp_login">
-                    <div class="taskBar_signUp">
-                        <a class="taskBar_signUp_btn" href="signup.jsp">Sign Up</a>
-                    </div>
-                    <div class="taskBar_login">
-                        <a class="taskBar_login_btn" href="login.jsp">Login</a>
-                    </div>
-                </div>
+                <%
+                    User u = (User) session.getAttribute("LOGIN_USER");//lấy User đã lưu trong session
+                    if (u != null) {
+                        out.print("<div class='user-container'>");
+                        out.print("<a href='profile' class='user-link' title='Thông tin cá nhân'>");
+                        out.print("<i class='fa-solid fa-circle-user'></i>");
+                        out.print(" </a>");
+                        out.print("</div>");
+                    } else {
+                        out.print("<div class='taskBar_signUp_login'>");
+                        out.print("    <div class='taskBar_signUp'>");
+                        out.print("        <a class='taskBar_signUp_btn' href='signup.jsp'>Sign Up</a>");
+                        out.print("    </div>");
+                        out.print("    <div class='taskBar_login'>");
+                        out.print("        <a class='taskBar_login_btn' href='login.jsp'>Login</a>");
+                        out.print("    </div>");
+                        out.print("</div>");
+                    }
+                %>
+
+
 
             </div>
         </div>

@@ -159,3 +159,32 @@ body {
     z-index: 998;
     cursor: pointer;
 }
+/*----------------------*/
+.user-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+}
+
+.user-link {
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+}
+
+/* Kích thước và màu sắc icon */
+.user-link i {
+    font-size: 32px; /* Độ lớn của icon */
+    color: #ffffff;    /* Màu mặc định */
+}
+
+/* Hiệu ứng khi di chuột vào */
+.user-link:hover {
+    transform: scale(1.1); /* Phóng to nhẹ khi hover */
+}
+
+.user-link:hover i {
+    color: #cfe2ff; /* Đổi màu sang xanh dương khi hover */
+}
