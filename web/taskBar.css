@@ -159,3 +159,34 @@ body {
     z-index: 998;
     cursor: pointer;
 }
+
+/* Container chung cho phần tài khoản */
+.user-account {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa chữ Hi và Icon */
+    cursor: pointer;
+    position: relative; /* Để căn chỉnh menu xổ xuống */
+}
+
+/* Chữ "Hi, ..." */
+.user-greeting {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Icon người dùng */
+.user-icon-box {
+    width: 32px;
+    height: 32px;
+    background-color: #e0e0e0; /* Màu nền xám nhạt giống Nike */
+    border-radius: 50%; /* Bo tròn */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+
+
+

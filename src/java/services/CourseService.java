@@ -112,4 +112,61 @@ public class CourseService {
 
         return c;
     }
+
+    public ArrayList<Course> listOfRegisteredCourse(String studentID) {
+        ArrayList<Course> list = new ArrayList<>();
+        Connection cn = null;
+
+        try {
+            //Ket noi DB
+            cn = DBUtils.getConnection();
+            //Kiem tra va lay du lieu tu DB ve
+            if (cn != null) {
+                //Viet cau SQL gui len DB
+                String sql = "SELECT [CourseID]\n"
+                        + "      ,[CourseName]\n"
+                        + "      ,[Description]\n"
+                        + "      ,[TuitionFee]\n"
+                        + "      ,[TotalLectures]\n"
+                        + "      ,[StartDate]\n"
+                        + "      ,[Schedule]\n"
+                        + "      ,[StudyTime]\n"
+                        + "      ,[ImageURL]\n"
+                        + "      ,[TeacherID]\n"
+                        + "      ,[NumberEnrolled]\n"
+                        + "  FROM [dbo].[Course]\n"
+                        + "where CourseID in (select CourseID\n"
+                        + "					from Enrollment\n"
+                        + "					where StudentID = ?)";
+                
+                //chuan bi de gui xuong SQL
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, studentID);//truyền tham số vào
+                //Gửi câu SQL đi và Lưu dữ liệu từ Db vào table
+                ResultSet table = st.executeQuery();
+                //đọc table lấy từng thành phần, tạo obj, lưu vào list gửi lên trên
+                if (table != null) {
+                    while (table.next()) {
+                        String CourseID = table.getString("CourseID");
+                        String CourseName = table.getString("CourseName");
+                        String Description = table.getString("Description");
+                        String TuitionFee = table.getString("TuitionFee");
+                        String TotalLectures = table.getString("TotalLectures");
+                        String StartDate = table.getString("StartDate");
+                        String Schedule = table.getString("Schedule");
+                        String StudyTime = table.getString("StudyTime");
+                        String ImageURL = table.getString("ImageURL");
+                        String TeacherID = table.getString("TeacherID");
+                        String NumberEnrolled = table.getString("NumberEnrolled");
+
+                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled);
+                        list.add(c);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

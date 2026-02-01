@@ -4,6 +4,8 @@
  */
 package controller;
 
+import entities.Course;
+import entities.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -11,20 +13,41 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import services.CourseService;
-import entities.Course;
-import entities.Student;
 import javax.servlet.http.HttpSession;
+import services.CourseService;
 
-public class GetCoursesController extends HttpServlet {
+/**
+ *
+ * @author ACER
+ */
+public class MyCourseController extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
+            //lay student tu session
+            HttpSession session = request.getSession();
+            Student student = (Student) session.getAttribute("LOGIN_USER");
+            
+            if(student == null){
+                response.sendRedirect("login.jsp");
+            }
+            
+            String studentID = student.getStudentID();
+
             //gọi xuống service để lấy danh sách môn
-            CourseService d = new CourseService();
-            ArrayList<Course> list = d.getAllCourse();
+            CourseService c = new CourseService();
+            ArrayList<Course> list = c.listOfRegisteredCourse(studentID);
             //lưu vào req
             request.setAttribute("LIST_COURSE", list);
             //đẩy lên SlideCart để xuất kết quả 
