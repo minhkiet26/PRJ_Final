@@ -130,3 +130,21 @@ body {
     border-radius: 8px;
     margin-top: 20px;
 }
+
+.btn-cancel{
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: red; /* Màu xanh giống hình mẫu */
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-bottom: 20px;
+}

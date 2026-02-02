@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -168,5 +169,28 @@ public class CourseService {
             e.printStackTrace();
         }
         return list;
+    }
+    
+    public String cancelCourse(String studentID, String courseID){
+        Connection cn = null;
+        try{
+            //ket noi DB
+            cn = DBUtils.getConnection();
+            if(cn != null){
+                //viet cau SQL
+                String sql = "DELETE FROM Enrollment \n" +
+                            "WHERE StudentID = ? AND CourseID = ?";
+                //chuan bi de gui xuong DB
+                PreparedStatement st = cn.prepareStatement(sql);
+                //truyen du lieu
+                st.setString(1, studentID);
+                st.setString(2, courseID);
+                //gui cau SQL di luu du lieu tu DB 
+                st.executeUpdate();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "Hủy đăng ký khóa học thành công!!";
     }
 }

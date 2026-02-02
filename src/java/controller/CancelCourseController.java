@@ -4,44 +4,56 @@
  */
 package controller;
 
+import entities.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import services.CourseService;
-import entities.Course;
 
 /**
  *
- * @author Admin
+ * @author ACER
  */
-public class GetCourse extends HttpServlet {
+public class CancelCourseController extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try{
-            String CourseID = request.getParameter("courseid");//lấy id cần           
-            CourseService d = new CourseService();
-            Course c = d.getCourse(CourseID);
-            //lưu vào req
-            request.setAttribute("COURSE_OBJ", c);
+        try {
+            HttpSession session = request.getSession();
+            Student student = (Student) session.getAttribute("LOGIN_USER");
             
-            String source = request.getParameter("source");
-            //bien la co
-            boolean showCacelBtn = false;
-            
-            //Chỉ khi nào có tín hiệu "mycourses" thì mới bật nút Hủy
-            if("mycourses".equals(source)){
-                showCacelBtn = true;
+            if(student == null){
+                response.sendRedirect("login.jsp");
+                return;
             }
             
-            //Gửi request biến này sang JSP
-            request.setAttribute("SHOW_CANCEL_BTN", showCacelBtn);
+            String studentID = student.getStudentID();
+            String courseID = request.getParameter("courseid");
             
-            //đẩy lên CourseDetails để in kết quả
-            request.getRequestDispatcher("CourseDetail.jsp").forward(request, response);
+            //goi xuong service
+            CourseService c = new CourseService();
+            String noti = c.cancelCourse(studentID, courseID);
+            
+            //luu vao request
+            request.setAttribute("NOTI", noti);
+            
+            //Quay lai trang danh sach mon hoc cua sinh vien
+            request.getRequestDispatcher("MyCourseController").forward(request, response);
+            
         }catch(Exception e){
             e.printStackTrace();
         }

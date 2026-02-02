@@ -35,7 +35,7 @@
                                 out.print("<div class='course-item'>"); // Class bọc ngoài
 
                                 // Thẻ A bao quanh
-                                out.print("<a href='GetCourse?courseid=" + c.getCourseID() + "' class='course-link-wrapper'>");
+                                out.print("<a href='GetCourse?courseid=" + c.getCourseID() + "&source=mycourses ' class='course-link-wrapper'>");
 
                                 //Hình ảnh
                                 out.print("<div class='course-thumb'>");

@@ -41,6 +41,7 @@ public class MyCourseController extends HttpServlet {
             
             if(student == null){
                 response.sendRedirect("login.jsp");
+                return;
             }
             
             String studentID = student.getStudentID();
