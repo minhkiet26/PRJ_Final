@@ -1,7 +1,12 @@
+<%-- 
+    Document   : myCourse
+    Created on : Feb 3, 2026, 8:28:18 PM
+    Author     : ACER
+--%>
 
-
-<%@page import="entities.Course"%>
+<%@page import="entities.Student"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="entities.Course"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,16 +18,41 @@
             rel="stylesheet"
             />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="stylesheet" href="card-style.css"/>
+        <link rel="stylesheet" href="taskBar.css"/>
+        <link rel="stylesheet" href="my-card-style.css"/>
     </head>
     <body>
+        <%
+            // Lấy User từ Session 
+            Student student = (Student) session.getAttribute("LOGIN_USER");
+        %>
+        <div>
+            <div class="taskBar">
+                <div class="taskBar_menu">
+                    <a class="taskBar_menu_btn" href="GetCoursesController">Home</a>
+                </div>
+                <div class="user-account" style="display: flex; align-items: center; gap: 10px;">
+                    <span class="user-greeting">Hi, <%= student.getName() %></span> 
+                    <div class="user-icon-box">
+                        <i class="fa-solid fa-user"></i>
+                        
+                        <div class="dropdown-menu">
+                            <a href="profile.jsp">Thông tin cá nhân</a>
+                            <a href="MyCourseController">Khóa học</a>
+                            <a href="LogoutController">Đăng xuất</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h1 style="text-align: center; margin: 40px; color: #003366;">Khóa học đã đăng ký</h1>
         <div class="splide" role="group" aria-label="Splide Basic HTML Example">
             <div class="splide__track">
                 <ul class="splide__list">
                     <%
                         //lấy list từ request
-                        ArrayList<Course> courses = (ArrayList) request.getAttribute("LIST_COURSE");
-                        
+                        ArrayList<Course> courses = (ArrayList) request.getAttribute("MY_LIST_COURSE");
+
                         if (courses != null) {
                             for (Course c : courses) {
                                 String imgSrc = c.getImageURL();
@@ -35,7 +65,7 @@
                                 out.print("<div class='course-item'>"); // Class bọc ngoài
 
                                 // Thẻ A bao quanh
-                                out.print("<a href='GetCourse?courseid=" + c.getCourseID() + "' class='course-link-wrapper'>");
+                                out.print("<a href='GetCourse?courseid=" + c.getCourseID() + "&source=mycourses' class='course-link-wrapper'>");
 
                                 //Hình ảnh
                                 out.print("<div class='course-thumb'>");
@@ -57,27 +87,29 @@
                                 out.print("</div>");
 
                                 // Footer
-                                out.print("<div class='course-bottom'>"); 
+                                out.print("<div class='course-bottom'>");
 
                                 // Giá tiền
                                 out.print("<div class='price-box'>");
-                                out.print("<span class='current-price'>" + c.getTuitionFee() + "đ</span>"); 
+                                out.print("<span class='current-price'>" + c.getTuitionFee() + "đ</span>");
                                 out.print("</div>");
                                 out.print("</div>");
 
-                                out.print("</div>"); 
-                                out.print("</a>"); 
-                                out.print("</div>"); 
+                                out.print("</div>");
+                                out.print("</a>");
+                                out.print("</div>");
                                 out.print("</li>");
-                                
+
                             }
                         }
-                    %>
+                    %> 
+
                 </ul>
             </div>
         </div>
 
+
         <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-        <script src="Cart.js"></script>
+        <script src="MyCart.js"></script>
     </body>
 </html>

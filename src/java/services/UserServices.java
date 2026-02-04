@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import mylib.DBUtils;
+import sun.security.util.Password;
 
 public class UserServices {
 
@@ -48,12 +49,10 @@ public class UserServices {
         try {
             cn = DBUtils.getConnection();
             if (cn != null) {
-                String sql = "SELECT [StudentID]\n"
-                        + "      ,[UserEmail]\n"
-                        + "      ,[Name]\n"
-                        + "      ,u.PhoneNumber\n"
-                        + "  FROM Student s, dbo.[User] u\n"
-                        + "  WHERE s.UserEmail = ?";
+                String sql = "SELECT [s].*, [u].*\n"
+                        + "FROM [Student] AS [s]\n"
+                        + "JOIN [User] AS [u] ON [s].[UserEmail] = [u].[Email]\n"
+                        + "WHERE [s].[UserEmail] = ?;";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setString(1, email);
                 ResultSet table = st.executeQuery();
@@ -63,7 +62,9 @@ public class UserServices {
                         String UserEmail = table.getString("UserEmail");
                         String Name = table.getString("Name");
                         String PhoneNumber = table.getString("PhoneNumber");
-                        s = new Student(StudentID, Name);
+                        String Password = table.getString("Password");
+                        String Role = table.getString("Role");
+                        s = new Student(email, Password, PhoneNumber, Role, StudentID, Name);
                     }
                 }
             }
@@ -79,12 +80,10 @@ public class UserServices {
         try {
             cn = DBUtils.getConnection();
             if (cn != null) {
-                String sql = "SELECT [TeacherID]\n"
-                        + "      ,[UserEmail]\n"
-                        + "      ,[Name]\n"
-                        + "      ,u.PhoneNumber\n"
-                        + "  FROM Teacher t, dbo.[User] u\n"
-                        + "  WHERE t.UserEmail = ?";
+                String sql = "SELECT [t].*, [u].*\n"
+                        + "FROM [Teacher] AS [t]\n"
+                        + "JOIN [User] AS [u] ON [t].[UserEmail] = [u].[Email]\n"
+                        + "WHERE [t].[UserEmail] = ?;";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setString(1, email);
                 ResultSet table = st.executeQuery();
@@ -94,7 +93,9 @@ public class UserServices {
                         String UserEmail = table.getString("UserEmail");
                         String Name = table.getString("Name");
                         String PhoneNumber = table.getString("PhoneNumber");
-                        t = new Teacher(TeacherID, Name);
+                        String Password = table.getString("Password");
+                        String Role = table.getString("Role");
+                        t = new Teacher(email, Password, PhoneNumber, Role, TeacherID, Name);
                     }
                 }
             }

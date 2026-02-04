@@ -1,10 +1,19 @@
+
 <%@page import="entities.Student"%>
+
+
+<%@page import="entities.User"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
         <title>Trang chủ</title>
+
+        <title>JSP Page</title>
+
         <link rel="stylesheet" href="taskBar.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
@@ -23,11 +32,8 @@
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     <div class="menu-group">
                         <h3 class="menu-title">Quản lý đào tạo</h3>
-                        <a href="<%= (student == null) ? "GetCoursesController" : "MyCourseController" %>">Khóa học</a>
+                        
                         <a href="#">Giảng viên</a>
-                        <% if(student != null) { %>
-                            <a href="profile.jsp">Thông tin cá nhân</a>
-                        <% } %>
                     </div>
                 </div>
                 <div id="myOverlay" class="overlay" onclick="closeNav()"></div>
@@ -56,9 +62,16 @@
                     </div>
                 </div>
             <% } else { %>
-                <div class="user-account" style="display: flex; align-items: center; gap: 10px; color: white;">
-                    <span class="user-greeting">Hi, <%= student.getName() %></span> <div class="user-icon-box">
+                <div class="user-account" style="display: flex; align-items: center; gap: 10px;">
+                    <span class="user-greeting">Hi, <%= student.getName() %></span> 
+                    <div class="user-icon-box">
                         <i class="fa-solid fa-user"></i>
+                        
+                        <div class="dropdown-menu">
+                            <a href="profile.jsp">Thông tin cá nhân</a>
+                            <a href="MyCourseController">Khóa học</a>
+                            <a href="LogoutController">Đăng xuất</a>
+                        </div>
                     </div>
                 </div>
             <% } %>

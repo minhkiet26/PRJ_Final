@@ -4,49 +4,28 @@
  */
 package controller;
 
-import entities.Course;
-import entities.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import services.CourseService;
 
 /**
  *
- * @author ACER
+ * @author Admin
  */
-public class MyCourseController extends HttpServlet {
-
+public class LogoutController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {
-            //lay student tu session
-            HttpSession session = request.getSession();
-            Student student = (Student) session.getAttribute("LOGIN_USER");
+        try{
+            HttpSession session = request.getSession();//lấy dữ liệu người dùng được lưu trong session của mỗi người dùng
+            session.invalidate();// xóa hết dữ liệu người dùng
+            request.getRequestDispatcher("GetCoursesController").forward(request, response);
+        }catch(Exception e){
             
-            if(student == null){
-                response.sendRedirect("login.jsp");
-                return;
-            }
-            
-            String studentID = student.getStudentID();
-
-            //gọi xuống service để lấy danh sách môn
-            CourseService c = new CourseService();
-            ArrayList<Course> list = c.listOfRegisteredCourse(studentID);
-            //lưu vào req
-            request.setAttribute("MY_LIST_COURSE", list);
-            //đẩy lên SlideCart để xuất kết quả 
-            request.getRequestDispatcher("myCourse.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
