@@ -22,7 +22,7 @@
         <link rel="stylesheet" href="my-card-style.css"/>
     </head>
     <body>
-        
+
         <%
             // Lấy User từ Session 
             Student student = (Student) session.getAttribute("LOGIN_USER");
@@ -42,21 +42,24 @@
                                 if (imgSrc != null && !imgSrc.startsWith("http")) {
                                     imgSrc = "images/" + imgSrc;
                                 }
-                                // ---------------------------------------------------
 
+                                // Bắt đầu thẻ li
                                 out.print("<li class='splide__slide'>");
-                                out.print("<div class='course-item'>"); // Class bọc ngoài
+                                out.print("<div class='course-item'>");
 
-                                // Thẻ A bao quanh
+                                // Thẻ A bao quanh toàn bộ (để làm Flex container)
                                 out.print("<a href='GetCourse?courseid=" + c.getCourseID() + "&source=mycourses' class='course-link-wrapper'>");
 
-                                //Hình ảnh
+                                // 1. CỘT TRÁI: Hình ảnh
                                 out.print("<div class='course-thumb'>");
                                 out.print("<img src='" + imgSrc + "' alt='" + c.getCourseName() + "' />");
                                 out.print("</div>");
 
-                                //Nội dung
+                                // 2. CỘT PHẢI: Nội dung
                                 out.print("<div class='course-content'>");
+
+                                // --- QUAN TRỌNG: Thêm div 'course-top-info' bao bọc phần trên ---
+                                out.print("<div class='course-top-info'>");
 
                                 // Tên khóa học
                                 out.print("<h3 class='course-name'>" + c.getCourseName() + "</h3>");
@@ -67,29 +70,30 @@
                                 out.print("<p><i class='fa-regular fa-calendar-check'></i> Khai giảng: " + c.getStartDate() + "</p>");
                                 out.print("<p><i class='fa-regular fa-calendar-days'></i> Lịch học: " + c.getSchedule() + "</p>");
                                 out.print("<p><i class='fa-regular fa-clock'></i> Giờ học: " + c.getStudyTime() + "</p>");
-                                out.print("</div>");
+                                out.print("</div>"); // Kết thúc course-meta-list
 
-                                // Footer
+                                out.print("</div>"); // Kết thúc course-top-info (QUAN TRỌNG)
+                                // ---------------------------------------------------------------
+
+                                // 3. Phần chân (Giá tiền) - Sẽ tự động bị đẩy xuống đáy
                                 out.print("<div class='course-bottom'>");
-
-                                // Giá tiền
                                 out.print("<div class='price-box'>");
                                 out.print("<span class='current-price'>" + c.getTuitionFee() + "đ</span>");
-                                out.print("</div>");
-                                out.print("</div>");
+                                out.print("</div>"); // Kết thúc price-box
+                                out.print("</div>"); // Kết thúc course-bottom
 
-                                out.print("</div>");
-                                out.print("</a>");
-                                out.print("</div>");
-                                out.print("</li>");
+                                out.print("</div>"); // Kết thúc course-content
+                                out.print("</a>"); // Kết thúc thẻ A
+                                out.print("</div>"); // Kết thúc course-item
+                                out.print("</li>"); // Kết thúc li
 
                             }
                         }
                     %> 
-                    
+
                 </ul>
             </div>
-        </div>
+        </div> 
 
 
         <!--    Hien thi thong bao khi bam nut dang ky mon hoc-->

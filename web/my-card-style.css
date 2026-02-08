@@ -1,179 +1,104 @@
-/* Tổng thể Card */
+/* 1. Tổng thể Card - Ép chiều cao cố định */
 .course-item {
-    height: auto !important;
-    min-height: 240px; /* Tăng chiều cao tối thiểu lên chút cho thoáng */
+    height: 280px !important; /* Chiều cao cố định cho tất cả các thẻ */
     display: flex;
-    background: #fff; /* Đảm bảo nền trắng */
-    border: 1px solid #e0e0e0; /* Viền nhẹ */
+    background: #fff;
+    border: 1px solid #e0e0e0;
     border-radius: 12px;
-    overflow: hidden; /* Cắt góc gọn gàng */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Đổ bóng nhẹ cho đẹp */
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
     position: relative;
-    top: 0;
 }
 
-.course-item:hover {
-    box-shadow: 0 15px 35px rgba(0, 51, 102, 0.2);
-    transform: translateY(-10px);
-    border-color: #b0c4de;
-}
-
+/* Link bao quanh - Quan trọng để chia cột */
 .course-link-wrapper {
     display: flex !important;
     flex-direction: row !important;
     width: 100% !important;
-    height: 100% !important; /* Ép chiều cao bằng thẻ cha */
-    align-items: stretch !important; /* Ép 2 bên hình và chữ cao bằng nhau */
+    height: 100% !important;
     text-decoration: none !important;
     color: inherit;
+    align-items: stretch; /* Kéo giãn 2 bên bằng nhau */
 }
 
-/* 2. Chỉnh lại ô Hình ảnh (Nằm bên trái) */
+/* 2. Cột Hình ảnh (Bên trái) - Chiếm đúng 40% */
 .course-thumb {
-    /* Tăng chiều rộng lên 45% để hình to rõ hơn */
-    width: 50% !important;
+    width: 40% !important; 
+    height: 100% !important; /* Luôn cao bằng thẻ cha */
     position: relative;
-    /* Thêm màu nền nhẹ để lấp khoảng trống nếu tỉ lệ ảnh không khớp khung */
-    background-color: #f8f9fa;
-    border-radius: 12px 0 0 12px !important; /* Chỉ bo góc bên trái */
-    overflow: hidden; /* Ẩn phần thừa */
-    /* Quan trọng: Để chiều cao tự giãn theo thẻ cha */
-    height: auto !important;
-    padding-top: 0 !important; /* Bỏ padding tỉ lệ cũ */
-    display: flex; /* Căn giữa ảnh */
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0; /* Không được co lại */
 }
 
-/* Chỉnh lại ảnh bên trong */
 .course-thumb img {
     width: 100% !important;
     height: 100% !important;
-    
-    /* <--- SỬA: Dùng 'cover' để hình to nhất có thể. 
-       Nếu dùng 'contain' hình sẽ luôn bị bé lại để vừa khung */
-    object-fit: cover !important; 
-    
-    padding: 0 !important;
+    object-fit: cover !important; /* Cắt ảnh vừa khung, không méo */
+    object-position: center;
 }
 
-/* 3. Chỉnh lại ô Nội dung (Nằm bên phải) */
+/* 3. Cột Nội dung (Bên phải) - Chiếm 60% còn lại */
 .course-content {
-    width: 50% !important; /* <--- SỬA: Giảm từ 55% xuống 50% */
+    width: 60% !important;
+    padding: 20px !important;
     display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important; 
-    padding: 20px 25px !important; /* Giảm padding một chút cho đỡ chật */
-    height: auto !important;
+    flex-direction: column !important; /* Xếp dọc từ trên xuống */
+    justify-content: space-between !important; /* Đẩy nội dung ra 2 đầu (trên/dưới) */
+    height: 100% !important;
 }
 
-/* Tinh chỉnh tiêu đề cho thẻ ngang */
-.course-name {
-    font-size: 30px !important; /* Tăng từ 18px -> 24px */
-    font-weight: 800 !important;
-    color: #002855;
-    margin-bottom: 20px !important; /* Cách xa các dòng dưới */
-    line-height: 1.3 !important;
+/* Phần Trên: Tên + Thông tin */
+.course-top-info {
+    flex-grow: 1; /* Chiếm hết khoảng trống để đẩy giá tiền xuống đáy */
+}
 
-    /* Giới hạn 2 dòng thôi, dài quá thì ... */
+/* Tên khóa học - Giới hạn 2 dòng */
+.course-name {
+    font-size: 20px !important; /* Chữ vừa phải thôi, to quá bị tràn */
+    font-weight: 700 !important;
+    color: #002855;
+    margin-bottom: 12px !important;
+    line-height: 1.4 !important;
+    
+    /* Kỹ thuật cắt chữ thừa thành dấu ... */
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 2; /* Tối đa 2 dòng */
     -webkit-box-orient: vertical;
     overflow: hidden;
+    height: 56px; /* Cố định chiều cao cho tên (2 dòng * 28px) */
 }
-/* List thông tin */
+
+/* List thông tin nhỏ */
 .course-meta-list p {
-    font-size: 18px !important; 
-    
-    /* Thêm độ đậm một chút để chữ không bị "mỏng manh" khi phóng to */
-    font-weight: 500 !important; 
-    
-    /* Tăng khoảng cách giữa các dòng để không bị dính chùm */
-    margin: 12px 0 !important;   
-    
-    color: #444 !important; /* Màu chữ đậm hơn xíu cho dễ đọc */
+    font-size: 14px !important;
+    margin: 6px 0 !important;
+    color: #555 !important;
     display: flex;
     align-items: center;
 }
 
 .course-meta-list i {
-    /* Icon phải to hơn chữ một chút mới đẹp (22px) */
-    font-size: 22px !important; 
-    
-    /* Tăng khoảng rộng dành cho icon để nó cách xa chữ ra */
-    width: 40px !important; 
-    
-    text-align: center; /* Căn giữa icon trong khoảng rộng đó */
-    color: #007bff; /* Giữ màu xanh */
+    font-size: 16px !important;
+    width: 25px !important;
+    text-align: center;
+    color: #007bff;
+    margin-right: 5px;
 }
 
-/* Footer */
+/* Phần Đáy: Giá tiền + Giảng viên */
 .course-bottom {
-    margin-top: auto;
-    padding-top: 12px;
+    margin-top: 10px;
+    padding-top: 10px;
     border-top: 1px solid #eee;
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.teacher-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #333;
-}
-.teacher-info img {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-}
-
-.price-box {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    flex-shrink: 0; /* Không bị bóp méo */
 }
 
 .current-price {
-    font-size: 16px;
-    font-weight: 800;
-    color: #003366;
-}
-
-.splide {
-    margin-bottom: 50px !important; /* Tạo khoảng trống bên dưới */
-    /* Quan trọng: Cho phép các phần tử con (như nút tròn) tràn ra ngoài */
-    overflow: visible !important;
-}
-
-
-/* Thêm padding cho đường ray chứa các slide để nội dung không bị sát đáy */
-.splide__track {
-    padding-bottom: 20px !important; /* Tạo khoảng đệm bên dưới */
-    /* Cho phép shadow khi hover thẻ tràn ra ngoài */
-    overflow: visible !important;
-}
-
-/* 3. Đưa nút tròn xuống bên dưới thẻ */
-.splide__pagination {
-    /* Đẩy nút xuống dưới container chính. Số âm càng lớn càng xuống thấp */
-    bottom: -20px !important;
-    padding: 0 !important; /* Reset padding mặc định */
-}
-
-/* Làm đẹp cho nút tròn */
-.splide__pagination__page {
-    background: #ccc; /* Màu xám cho nút thường */
-    opacity: 0.7;
-}
-/* Màu cho nút đang được chọn */
-.splide__pagination__page.is-active {
-    background: #003366; /* Màu xanh đậm theo theme của bạn */
-    transform: scale(1.2); /* Phóng to nhẹ */
-    opacity: 1;
+    font-size: 18px;
+    font-weight: 700;
+    color: #d32f2f; /* Màu đỏ cho giá nổi bật */
 }
