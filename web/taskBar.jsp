@@ -32,7 +32,7 @@
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
                     <div class="menu-group">
                         <h3 class="menu-title">Quản lý đào tạo</h3>
-                        
+                        <a href="GetCoursesController">Trang chủ</a>
                         <a href="#">Giảng viên</a>
                     </div>
                 </div>
@@ -71,6 +71,7 @@
                             <a href="profile.jsp">Thông tin cá nhân</a>
                             <a href="MyCourseController">Khóa học</a>
                             <a href="LogoutController">Đăng xuất</a>
+                            <a href="accountSetting.jsp">Cài đặt tài khoản</a>
                         </div>
                     </div>
                 </div>

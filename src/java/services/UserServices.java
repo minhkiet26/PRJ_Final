@@ -10,6 +10,7 @@ import entities.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import mylib.DBUtils;
 import sun.security.util.Password;
 
@@ -72,6 +73,40 @@ public class UserServices {
 
         }
         return s;
+    }
+
+    public boolean updateStudent(String studentID, String password, String phone, String name) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sqlStudent = "UPDATE Student SET Name = ? WHERE StudentID = ?";
+                PreparedStatement pst1 = cn.prepareStatement(sqlStudent);
+                pst1.setString(1, name);      
+                pst1.setString(2, studentID);    
+                pst1.executeUpdate();
+                
+                String sql = "UPDATE U\n"
+                        + "SET \n"
+                        + "    U.Password = ?,   \n"
+                        + "    U.PhoneNumber = ?    \n"
+                        + "FROM dbo.[User] U\n"
+                        + "JOIN Student S ON U.Email = S.UserEmail\n"
+                        + "WHERE S.StudentID = ?";
+
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, password);
+                st.setString(2, phone);
+                st.setString(3, studentID);
+
+                int check = st.executeUpdate();
+                if(check > 0) return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public Teacher getTeacher(String email) {

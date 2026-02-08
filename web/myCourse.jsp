@@ -22,29 +22,12 @@
         <link rel="stylesheet" href="my-card-style.css"/>
     </head>
     <body>
+        
         <%
             // Lấy User từ Session 
             Student student = (Student) session.getAttribute("LOGIN_USER");
         %>
-        <div>
-            <div class="taskBar">
-                <div class="taskBar_menu">
-                    <a class="taskBar_menu_btn" href="GetCoursesController">Home</a>
-                </div>
-                <div class="user-account" style="display: flex; align-items: center; gap: 10px;">
-                    <span class="user-greeting">Hi, <%= student.getName() %></span> 
-                    <div class="user-icon-box">
-                        <i class="fa-solid fa-user"></i>
-                        
-                        <div class="dropdown-menu">
-                            <a href="profile.jsp">Thông tin cá nhân</a>
-                            <a href="MyCourseController">Khóa học</a>
-                            <a href="LogoutController">Đăng xuất</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <jsp:include page="taskBar.jsp"/>
         <h1 style="text-align: center; margin: 40px; color: #003366;">Khóa học đã đăng ký</h1>
         <div class="splide" role="group" aria-label="Splide Basic HTML Example">
             <div class="splide__track">
@@ -103,11 +86,27 @@
                             }
                         }
                     %> 
-
+                    
                 </ul>
             </div>
         </div>
 
+
+        <!--    Hien thi thong bao khi bam nut dang ky mon hoc-->
+        <%
+            // Lấy thông báo từ Controller gửi sang
+            String msg = (String) request.getAttribute("NOTI");
+
+            // Nếu có thông báo (Khác null) và không rỗng
+            if (msg != null && !msg.isEmpty()) {
+        %>
+        <script>
+            // Lệnh này sẽ bật một cửa sổ thông báo nhỏ trên trình duyệt
+            alert("<%= msg%>");
+        </script>
+        <%
+            }
+        %>
 
         <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
         <script src="MyCart.js"></script>
