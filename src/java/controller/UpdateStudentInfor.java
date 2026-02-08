@@ -67,6 +67,12 @@ public class UpdateStudentInfor extends HttpServlet {
                 request.getRequestDispatcher("accountSetting.jsp").forward(request, response);
                 return;
             }
+            
+            if(newPass.equals(student.getPassword())){
+                request.setAttribute("ERROR", "Hãy đăng ký mật khẩu mới!");
+                request.getRequestDispatcher("accountSetting.jsp").forward(request, response);
+                return;
+            }
 
             //goi xuong service
             UserServices u = new UserServices();
