@@ -20,6 +20,10 @@
         <servlet-name>GetAllUserController</servlet-name>
         <servlet-class>controller.GetAllUserController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SignUpController</servlet-name>
+        <servlet-class>controller.SignUpController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetCoursesController</servlet-name>
         <url-pattern>/GetCoursesController</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>GetAllUserController</servlet-name>
         <url-pattern>/GetAllUserController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SignUpController</servlet-name>
+        <url-pattern>/SignUpController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

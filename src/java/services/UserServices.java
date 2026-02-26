@@ -110,4 +110,79 @@ public class UserServices {
         }
         return t;
     }
+
+    public Boolean postUser(String Email, String Password, String PhoneNumber, String Role) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "INSERT INTO [User] (Email, Password, PhoneNumber, Role) VALUES (?, ?, ?, ?)";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, Email);
+                st.setString(2, Password);
+                st.setString(3, PhoneNumber);
+                st.setString(4, Role);
+                st.executeUpdate();
+                return true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Boolean postStudent(String Name, String UserEmail) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "INSERT INTO Student (Name, UserEmail) VALUES (?, ?)";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, Name);
+                st.setString(2, UserEmail);
+                st.executeUpdate();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Boolean postTeacher(String Name, String UserEmail) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "INSERT INTO Teacher (Name, UserEmail) VALUES (?, ?)";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, Name);
+                st.setString(2, UserEmail);
+                st.executeUpdate();
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public Boolean checkEmail(String Email){
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "SELECT * FROM [User] WHERE Email = '?';";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1,Email);
+                ResultSet table = st.executeQuery();
+                if(table != null){
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return false;
+    }
 }

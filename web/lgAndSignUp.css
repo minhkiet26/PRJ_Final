@@ -195,9 +195,98 @@ body {
 .form-inner form .field {
     height: 50px;
     width: 100%;
-    margin-top: 20px; /* Khoảng cách giữa các ô input */
+    margin-top: 20px;
 }
 
 .form-inner form .btn {
-    margin-top: 30px; /* Tách nút bấm ra xa ô input */
+    margin-top: 30px;
+}
+/*------------------------------------*/
+.role-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 25px;
+    padding: 10px;
+    border: 1px dashed lightgrey;
+    border-radius: 15px;
+}
+
+.role-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.role-option input[type="radio"] {
+    margin-right: 8px;
+    accent-color: #0033cc;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.role-option:hover {
+    color: #0033cc;
+}
+
+.field.hidden {
+    display: none;
+}
+
+.field.show {
+    display: block;
+    animation: slideDown 0.4s ease forwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* phần chọn Role */
+.role-selection {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.role-selection label {
+    font-weight: 500;
+    color: #444;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.role-selection input[type="radio"] {
+    accent-color: #0033cc;
+    transform: scale(1.2);
+}
+
+#fullNameField {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+input:required:invalid {
+    border-color: #ff4d4d;
+}
+
+input:required:valid {
+    border-color: #2ecc71;
 }

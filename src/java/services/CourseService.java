@@ -38,7 +38,7 @@ public class CourseService {
                         + "      ,[ImageURL]\n"
                         + "      ,[TeacherID]\n"
                         + "      ,[NumberEnrolled]\n"
-                        + "  FROM [OnlineCourseDB].[dbo].[Course]";
+                        + "  FROM [EducationDB].[dbo].[Course]";
                 //chuẩn bị để gửi xuống SQL
                 Statement st = cn.createStatement();
                 //Gửi câu SQL đi và Lưu dữ liệu từ Db vào table
@@ -86,7 +86,7 @@ public class CourseService {
                     + "      ,[ImageURL]\n"
                     + "      ,[TeacherID]\n"
                     + "      ,[NumberEnrolled]\n"
-                    + "  FROM [OnlineCourseDB].[dbo].[Course]\n"
+                    + "  FROM [EducationDB].[dbo].[Course]\n"
                     + "  where CourseID=?"; //Câu sql để gửi xuống
             PreparedStatement st = cn.prepareStatement(sql);
             st.setString(1, CourseID);//truyền tham số vào
