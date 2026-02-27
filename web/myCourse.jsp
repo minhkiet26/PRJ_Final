@@ -75,11 +75,28 @@
                                 out.print("</div>"); // Kết thúc course-top-info (QUAN TRỌNG)
                                 // ---------------------------------------------------------------
 
-                                // 3. Phần chân (Giá tiền) - Sẽ tự động bị đẩy xuống đáy
                                 out.print("<div class='course-bottom'>");
-                                out.print("<div class='price-box'>");
-                                out.print("<span class='current-price'>" + c.getTuitionFee() + "đ</span>");
-                                out.print("</div>"); // Kết thúc price-box
+                                String cssClass = "";
+                                String label = "";
+
+                                if ("Approved".equals(c.getEnrollmentStatus())) {
+                                    cssClass = "status-approved"; // Class màu xanh
+                                    label = "Đã duyệt";
+                                } else if ("Rejected".equals(c.getEnrollmentStatus())) {
+                                    cssClass = "status-rejected"; // Class màu đỏ
+                                    label = "Từ chối đăng ký";
+                                } else if ("Canceled".equals(c.getEnrollmentStatus())) {
+                                    cssClass = "status-canceled"; //Class mau xam
+                                    label = "Đã hủy";
+                                } else {
+                                    cssClass = "status-pending"; // Class màu vàng
+                                    label = "Đang chờ đăng ký";
+                                }
+                                out.print("<div class='status-box'>");
+                                out.print("<span class='status-badge " + cssClass + "'>");
+                                out.print("<i class='fa-solid fa-circle-info'></i> " + label);
+                                out.print("</span>");
+                                out.print("</div>");
                                 out.print("</div>"); // Kết thúc course-bottom
 
                                 out.print("</div>"); // Kết thúc course-content

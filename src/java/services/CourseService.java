@@ -28,18 +28,7 @@ public class CourseService {
             //Kiểm tra và lấy từ DB về
             if (cn != null) {
                 //viết câu SQL gửi lên DB
-                String sql = "SELECT [CourseID]\n"
-                        + "      ,[CourseName]\n"
-                        + "      ,[Description]\n"
-                        + "      ,[TuitionFee]\n"
-                        + "      ,[TotalLectures]\n"
-                        + "      ,[StartDate]\n"
-                        + "      ,[Schedule]\n"
-                        + "      ,[StudyTime]\n"
-                        + "      ,[ImageURL]\n"
-                        + "      ,[TeacherID]\n"
-                        + "      ,[NumberEnrolled]\n"
-                        + "  FROM [OnlineCourseDB].[dbo].[Course]";
+                String sql = "SELECT * FROM Course";
                 //chuẩn bị để gửi xuống SQL
                 Statement st = cn.createStatement();
                 //Gửi câu SQL đi và Lưu dữ liệu từ Db vào table
@@ -59,7 +48,7 @@ public class CourseService {
                         String TeacherID = table.getString("TeacherID");
                         String NumberEnrolled = table.getString("NumberEnrolled");
 
-                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled);
+                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, null);
                         list.add(c);
                     }
                 }
@@ -75,20 +64,9 @@ public class CourseService {
         Course c = null;
         try {
             cn = DBUtils.getConnection();
-            String sql = "/****** Script for SelectTopNRows command from SSMS  ******/\n"
-                    + "SELECT [CourseID]\n"
-                    + "      ,[CourseName]\n"
-                    + "      ,[Description]\n"
-                    + "      ,[TuitionFee]\n"
-                    + "      ,[TotalLectures]\n"
-                    + "      ,[StartDate]\n"
-                    + "      ,[Schedule]\n"
-                    + "      ,[StudyTime]\n"
-                    + "      ,[ImageURL]\n"
-                    + "      ,[TeacherID]\n"
-                    + "      ,[NumberEnrolled]\n"
-                    + "  FROM [OnlineCourseDB].[dbo].[Course]\n"
-                    + "  where CourseID=?"; //Câu sql để gửi xuống
+            String sql = "SELECT *"
+                    + "FROM Course \n"
+                    + "WHERE CourseID = ?"; //Câu sql để gửi xuống
             PreparedStatement st = cn.prepareStatement(sql);
             st.setString(1, CourseID);//truyền tham số vào
             ResultSet table = st.executeQuery();//lưu bảng lấy được
@@ -105,7 +83,8 @@ public class CourseService {
                     String ImageURL = table.getString("ImageURL");
                     String TeacherID = table.getString("TeacherID");
                     String NumberEnrolled = table.getString("NumberEnrolled");
-                    c = new Course(courseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled);
+
+                    c = new Course(courseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, null);
                 }
             }
         } catch (Exception e) {
@@ -124,22 +103,11 @@ public class CourseService {
             //Kiem tra va lay du lieu tu DB ve
             if (cn != null) {
                 //Viet cau SQL gui len DB
-                String sql = "SELECT [CourseID]\n"
-                        + "      ,[CourseName]\n"
-                        + "      ,[Description]\n"
-                        + "      ,[TuitionFee]\n"
-                        + "      ,[TotalLectures]\n"
-                        + "      ,[StartDate]\n"
-                        + "      ,[Schedule]\n"
-                        + "      ,[StudyTime]\n"
-                        + "      ,[ImageURL]\n"
-                        + "      ,[TeacherID]\n"
-                        + "      ,[NumberEnrolled]\n"
-                        + "  FROM [dbo].[Course]\n"
-                        + "where CourseID in (select CourseID\n"
-                        + "					from Enrollment\n"
-                        + "					where StudentID = ?)";
-                
+                String sql = "SELECT C.*, E.Status AS EnrollmentStatus \n"
+                        + "FROM [dbo].[Course] C \n"
+                        + "JOIN [dbo].[Enrollment] E ON C.CourseID = E.CourseID \n"
+                        + "WHERE E.StudentID = ?";
+
                 //chuan bi de gui xuong SQL
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setString(1, studentID);//truyền tham số vào
@@ -159,8 +127,9 @@ public class CourseService {
                         String ImageURL = table.getString("ImageURL");
                         String TeacherID = table.getString("TeacherID");
                         String NumberEnrolled = table.getString("NumberEnrolled");
-
-                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled);
+                        String EnrollmentStatus = table.getString("EnrollmentStatus");
+                        
+                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, EnrollmentStatus);
                         list.add(c);
                     }
                 }
@@ -170,16 +139,17 @@ public class CourseService {
         }
         return list;
     }
-    
-    public String cancelCourse(String studentID, String courseID){
+
+    public String cancelCourse(String studentID, String courseID) {
         Connection cn = null;
-        try{
+        try {
             //ket noi DB
             cn = DBUtils.getConnection();
-            if(cn != null){
+            if (cn != null) {
                 //viet cau SQL
-                String sql = "DELETE FROM Enrollment \n" +
-                            "WHERE StudentID = ? AND CourseID = ?";
+                String sql = "UPDATE Enrollment \n"
+                        + "SET Status = 'Canceled', CancelDate = GETDATE() \n"
+                        + "WHERE StudentID = ? AND CourseID = ?";
                 //chuan bi de gui xuong DB
                 PreparedStatement st = cn.prepareStatement(sql);
                 //truyen du lieu
@@ -188,7 +158,7 @@ public class CourseService {
                 //gui cau SQL di luu du lieu tu DB 
                 st.executeUpdate();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "Hủy đăng ký khóa học thành công!!";
