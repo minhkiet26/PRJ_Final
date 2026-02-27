@@ -159,3 +159,80 @@ body {
     z-index: 998;
     cursor: pointer;
 }
+
+
+/* Container chung cho phần tài khoản */
+.user-account {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa chữ Hi và Icon */
+    cursor: pointer;
+    position: relative; /* Để căn chỉnh menu xổ xuống */
+}
+
+/* Chữ "Hi, ..." */
+.user-greeting {
+    font-weight: 600;
+    font-size: 14px;
+    color: white
+}
+
+/* Icon người dùng */
+.user-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;        /* Độ rộng vùng chứa icon */
+    height: 36px;       /* Chiều cao vùng chứa icon */
+    border-radius: 50%; /* Bo tròn để tạo hình tròn khi hover */
+    cursor: pointer;    /* Hiện bàn tay khi chỉ vào */
+    transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu mượt mà */
+}
+
+/* 2. Bản thân cái icon (thẻ i bên trong) */
+.user-icon-box i {
+    /* QUAN TRỌNG: Đổi màu icon thành TRẮNG để nổi trên nền tối */
+    color: #ffffff; 
+    font-size: 20px;    /* Kích thước của icon */
+}
+
+.user-icon-box:hover {
+    /* Màu nền trắng mờ (độ trong suốt 0.1) */
+    background-color: rgba(255, 255, 255, 0.15);
+    transform:scale(1.1);
+}
+
+/* Menu xổ xuống (Ẩn đi, hiện khi hover) */
+.dropdown-menu {
+    display: none; /* Mặc định ẩn */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    width: 150px;
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+    transition: background 0.2s;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f0f0f0;
+}
+
+/* Hiệu ứng: Khi rê chuột vào Icon thì hiện Menu */
+.user-icon-box:hover .dropdown-menu, 
+.dropdown-menu:hover {
+    display: block;
+}
+
+

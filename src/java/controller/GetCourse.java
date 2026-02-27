@@ -4,52 +4,46 @@
  */
 package controller;
 
-import entities.Student;
-import entities.Teacher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import services.UserServices;
+import services.CourseService;
+import entities.Course;
 
 /**
  *
  * @author Admin
  */
-public class LoginController extends HttpServlet {
-
+public class GetCourse extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {
-            String email = request.getParameter("txtemail");
-            String password = request.getParameter("txtpassword");
-            UserServices Us = new UserServices();
-            String roleCheck = Us.getUser(email, password);
-            if (roleCheck != null) {
-                if ("Student".equals(roleCheck)) {
-                    Student s = Us.getStudent(email);
-                    //Lưu kết quả vào session để sau này còn sử sụng
-                    HttpSession session = request.getSession();
-                    session.setAttribute("LOGIN_USER", s);
-                    request.getRequestDispatcher("GetCoursesController").forward(request, response);
-                } else {
-                    Teacher t = Us.getTeacher(email);
-                    //Lưu kết quả vào session để sau này còn sử sụng
-                    HttpSession session = request.getSession();
-                    session.setAttribute("LOGIN_USER", t);
-                    request.getRequestDispatcher("GetCoursesController").forward(request, response);
-                }
-            } else {
-                String error = "Wrong Email or Password";//thông báo lỗi
-                request.setAttribute("ERROR", error);//đẩy vào req
-                request.getRequestDispatcher("login.jsp").forward(request, response);//chuyển trang để hiển thị lên cho người dùng
+        try{
+            String CourseID = request.getParameter("courseid");//lấy id cần           
+            CourseService d = new CourseService();
+            Course c = d.getCourse(CourseID);
+            //lưu vào req
+            request.setAttribute("COURSE_OBJ", c);
+            
+            String source = request.getParameter("source");
+            //bien la co
+            boolean showCacelBtn = false;
+            
+            //Chỉ khi nào có tín hiệu "mycourses" thì mới bật nút Hủy
+            if("mycourses".equals(source)){
+                showCacelBtn = true;
             }
-        } catch (Exception e) {
-
+            
+            //Gửi request biến này sang JSP
+            request.setAttribute("SHOW_CANCEL_BTN", showCacelBtn);
+            
+            //đẩy lên CourseDetails để in kết quả
+            request.getRequestDispatcher("CourseDetail.jsp").forward(request, response);
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 

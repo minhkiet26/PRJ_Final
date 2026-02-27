@@ -13,13 +13,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import services.CourseService;
 import entities.Course;
-
+import entities.Student;
+import javax.servlet.http.HttpSession;
 
 public class GetCoursesController extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try{
+        try {
             //gọi xuống service để lấy danh sách môn
             CourseService d = new CourseService();
             ArrayList<Course> list = d.getAllCourse();
@@ -27,7 +29,8 @@ public class GetCoursesController extends HttpServlet {
             request.setAttribute("LIST_COURSE", list);
             //đẩy lên SlideCart để xuất kết quả 
             request.getRequestDispatcher("index.jsp").forward(request, response);
-        }catch(Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

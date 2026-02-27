@@ -19,11 +19,17 @@ public class Course {
     private String Schedule;
     private String StartDate;
     private String TotalLectures;
+    private String NumberEnrolled;
+    private String enrollmentStatus;
+
 
     public Course() {
     }
 
-    public Course(String CourseID, String CourseName, String Description, String TuitionFee, String TeacherID, String ImageURL, String StudyTime, String Schedule, String StartDate, String TotalLectures) {
+    public Course(String CourseID, String CourseName, String Description, 
+            String TuitionFee, String TeacherID, String ImageURL, String StudyTime, 
+            String Schedule, String StartDate, String TotalLectures, 
+            String NumberEnrolled, String enrollmentStatus) {
         this.CourseID = CourseID;
         this.CourseName = CourseName;
         this.Description = Description;
@@ -34,7 +40,10 @@ public class Course {
         this.Schedule = Schedule;
         this.StartDate = StartDate;
         this.TotalLectures = TotalLectures;
+        this.NumberEnrolled = NumberEnrolled;
+        this.enrollmentStatus = enrollmentStatus;
     }
+    
 
     public String getCourseID() {
         return CourseID;
@@ -70,6 +79,10 @@ public class Course {
 
     public String getTeacherID() {
         return TeacherID;
+    }
+
+    public String getNumberEnrolled() {
+        return NumberEnrolled;
     }
 
     public void setTeacherID(String TeacherID) {
@@ -115,5 +128,17 @@ public class Course {
     public void setTotalLectures(String TotalLectures) {
         this.TotalLectures = TotalLectures;
     }
-    
+
+    public void setNumberEnrolled(String NumberEnrolled) {
+        this.NumberEnrolled = NumberEnrolled;
+    }
+
+    public String getEnrollmentStatus() {
+        return enrollmentStatus;
+    }
+
+    public void setEnrollmentStatus(String enrollmentStatus) {
+        this.enrollmentStatus = enrollmentStatus;
+    }
+
 }

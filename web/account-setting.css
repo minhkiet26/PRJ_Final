@@ -1,0 +1,116 @@
+
+    /* 1. Thiết lập chung cho trang */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f7f6; /* Màu nền xám nhẹ dịu mắt */
+        margin: 0;
+        padding: 0;
+    }
+
+    /* 2. Căn giữa khung nội dung */
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh; /* Chiều cao tối thiểu để căn giữa dọc */
+        padding: 20px;
+    }
+
+    /* 3. Khung chứa form (Cái thẻ trắng) */
+    .account-setting {
+        background-color: #ffffff;
+        width: 100%;
+        max-width: 500px; /* Giới hạn chiều rộng cho đẹp */
+        padding: 40px;
+        border-radius: 12px; /* Bo góc mềm mại */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ tạo độ nổi */
+    }
+
+    /* 4. Tiêu đề */
+    .header {
+        text-align: center;
+        color: #003366; /* Màu chủ đạo */
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 30px;
+        margin-top: 0 !important; /* Ghi đè style inline cũ */
+    }
+
+    /* 5. Các nhóm input */
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    /* Nhãn (Label) */
+    .form-group label {
+        display: block;
+        font-size: 15px;
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 8px;
+    }
+
+    /* Ô nhập liệu (Input) */
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        font-size: 16px;
+        color: #333;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #fafafa;
+        box-sizing: border-box; /* Quan trọng: để padding không làm vỡ khung */
+        transition: all 0.3s ease;
+    }
+
+    /* Hiệu ứng khi bấm vào ô input */
+    .form-control:focus {
+        border-color: #003366;
+        background-color: #fff;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
+    }
+
+    /* 6. Thông báo lỗi/thành công */
+    p {
+        font-size: 14px;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+    }
+    /* Tinh chỉnh lại style inline của bạn cho đẹp hơn */
+    p[style*="color: red"] {
+        background-color: #fff2f2;
+        border: 1px solid #ffcccc;
+    }
+    p[style*="color: green"] {
+        background-color: #f0fff4;
+        border: 1px solid #c3e6cb;
+    }
+
+    /* 7. Nút bấm (Button) */
+    .form-actions {
+        margin-top: 30px;
+    }
+
+    .btn-save {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #ffffff;
+        background-color: #003366;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s;
+    }
+
+    .btn-save:hover {
+        background-color: #002244; /* Màu đậm hơn khi di chuột */
+    }
+
+    .btn-save:active {
+        transform: scale(0.98); /* Nhấn xuống nhẹ */
+    }
+
