@@ -4,58 +4,24 @@
  */
 package controller;
 
-import entities.Student;
-import entities.Teacher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import services.UserServices;
-import entities.User;
 
 /**
  *
  * @author Admin
  */
-public class LoginController extends HttpServlet {
-
+public class GetAllUserController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try {
-            String email = request.getParameter("txtemail");
-            String password = request.getParameter("txtpassword");
-            UserServices Us = new UserServices();
-            User u = Us.getUser(email, password);
-            String roleCheck = u.getRole();
-            if (roleCheck != null) {
-                if ("Admin".equals(roleCheck)) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("LOGIN_USER", u);//lưu vào session
-                    request.getRequestDispatcher("GetCoursesController").forward(request, response);
-                } else if ("Student".equals(roleCheck)) {
-                    Student s = Us.getStudent(email);
-                    //Lưu kết quả vào session để sau này còn sử sụng
-                    HttpSession session = request.getSession();
-                    session.setAttribute("LOGIN_USER", s);
-                    request.getRequestDispatcher("GetCoursesController").forward(request, response);
-                } else {
-                    Teacher t = Us.getTeacher(email);
-                    //Lưu kết quả vào session để sau này còn sử sụng
-                    HttpSession session = request.getSession();
-                    session.setAttribute("LOGIN_USER", t);
-                    request.getRequestDispatcher("GetCoursesController").forward(request, response);
-                }
-            } else {
-                String error = "Wrong Email or Password";//thông báo lỗi
-                request.setAttribute("ERROR", error);//đẩy vào req
-                request.getRequestDispatcher("login.jsp").forward(request, response);//chuyển trang để hiển thị lên cho người dùng
-            }
-        } catch (Exception e) {
-
+        try{
+        }catch(Exception e){
+            
         }
     }
 

@@ -35,17 +35,23 @@
                     <div class="form-inner">
                         <form action="LoginController" method="post" class="login">
                             <div class="field">
-                                <input type="text" name="txtemail" placeholder="Email Address" required>
+                                <input type="text" name="txtemail" 
+                                       oninvalid="this.setCustomValidity('Vui lòng nhập Email')"
+                                       oninput="this.setCustomValidity('')"
+                                       placeholder="Email Address" required="">
                             </div>
                             <div class="field">
-                                <input type="password" name="txtpassword" placeholder="Password" required>
+                                <input type="password" name="txtpassword" 
+                                       oninvalid="this.setCustomValidity('Vui lòng nhập Mật Khẩu')"
+                                       oninput="this.setCustomValidity('')"
+                                       placeholder="Password" required="">
                             </div>
                             <div class="pass-link">
                                 <a href="#">Forgot password?</a>
                             </div>
                             <div><%
                                 String msg = (String) request.getAttribute("ERROR");
-                                if (msg != null){
+                                if (msg != null) {
                                     out.print("<p style='color: red'>");
                                     out.print(msg);
                                     out.print("</p>");
