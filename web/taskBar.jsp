@@ -23,6 +23,15 @@
                             <a href="#"> Khóa học</a>
                             <a href="#"> Giảng viên</a>
                             <a href="#"> Thông tin cá nhân</a>
+                            <%
+                                // Lấy đối tượng user từ session đã lưu ở LoginController
+                                User user = (User) session.getAttribute("LOGIN_USER");
+                                if (user != null && "Admin".equals(user.getRole())) {
+                            %>
+                            <a href="UserManagerController">Quản lý người dùng</a>
+                            <%
+                                }
+                            %>
                             <a href="LogoutController">Đăng xuất</a> //khi làm hiển thị thông tin người dùng hãy đem thẻ a này qua đó
                         </div>
                     </div>
