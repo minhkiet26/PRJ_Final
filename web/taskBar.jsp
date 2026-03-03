@@ -38,7 +38,7 @@
                     <div id="myOverlay" class="overlay" onclick="closeNav()"></div>
                 </div>
 
-                <div class="taskBar_search">
+<!--                <div class="taskBar_search">
                     <div class="search_wrapper">
                         <form action="Search" method="post" style="display: flex; align-items: center; width: 100%;">
                             <input class="search_pill_text" type="text" placeholder="Search" name="textSearch">
@@ -49,7 +49,8 @@
                             </button>
                         </form>
                     </div>
-                </div>
+                </div>-->
+
 
                 <%
                     User u = (User) session.getAttribute("LOGIN_USER");//lấy User đã lưu trong session
@@ -70,9 +71,6 @@
                         out.print("</div>");
                     }
                 %>
-
-
-
             </div>
         </div>
 

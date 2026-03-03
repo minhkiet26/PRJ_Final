@@ -18,5 +18,6 @@
         
         <jsp:include page="taskBar.jsp"/>
         <jsp:include page="SlideCart.jsp"/>
+        <%--<jsp:include page="searchBar.jsp"/>--%>
     </body>
 </html>

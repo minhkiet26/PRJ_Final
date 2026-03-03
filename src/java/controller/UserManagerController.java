@@ -26,8 +26,9 @@ public class UserManagerController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try {
             UserServices Us = new UserServices();
-            ArrayList<User> list = Us.getAllUser();
-                      
+            ArrayList<User> list = Us.getAllUser();//lấy hết user
+            request.setAttribute("LIST_USER", list);//lưu vào req để đưa lên
+            request.getRequestDispatcher("showUser.jsp").forward(request, response);//chuyển trang
         } catch (Exception e) {
         }
     }
