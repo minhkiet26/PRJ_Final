@@ -26,7 +26,7 @@ public class UserServices {
                         + "      ,[Password]\n"
                         + "      ,[Role]\n"
                         + "      ,[PhoneNumber]\n"
-                        + "  FROM [OnlineCourseDB].[dbo].[User]\n"
+                        + "  FROM [dbo].[User]\n"
                         + "  WHERE Email = ? and Password = ?";
                 //chuẩn bị cho câu sql gửi đi
                 PreparedStatement st = cn.prepareStatement(sql);

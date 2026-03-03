@@ -21,20 +21,38 @@
 
         <%
             // Lấy User từ Session 
-            Student student = (Student) session.getAttribute("LOGIN_USER");
+            User user = (User) session.getAttribute("LOGIN_USER");
+
         %>
 
         <div class="taskBar">
-            
+
             <div class="taskBar_menu">
                 <a class="taskBar_menu_btn" href="javascript:void(0)" onclick="openNav()">Menu</a>
                 <div id="mySidebar" class="sidebar">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                    <% if (user == null) { %>
                     <div class="menu-group">
                         <h3 class="menu-title">Quản lý đào tạo</h3>
                         <a href="GetCoursesController">Trang chủ</a>
                         <a href="#">Giảng viên</a>
                     </div>
+                    <% } else if (user.getRole().equals("Student")) {%>
+                    <%Student student = (Student) session.getAttribute("LOGIN_USER");%>
+                    <div class="menu-group">
+                        <h3 class="menu-title">Quản lý đào tạo</h3>
+                        <a href="GetCoursesController">Trang chủ</a>
+                        <a href="#">Giảng viên</a>
+                    </div>
+                    <% } else if (user.getRole().equals("Admin")) {%>
+                    <div class="menu-group">
+
+                        <h3 class="menu-title">Quản lý đào tạo</h3>
+                        <a href="">Trang chủ</a>
+                        <a href="#">Giảng viên</a>
+
+                    </div>
+                    <%}%>
                 </div>
                 <div id="myOverlay" class="overlay" onclick="closeNav()"></div>
             </div>
@@ -45,37 +63,44 @@
                         <input class="search_pill_text" type="text" placeholder="Search" name="textSearch">
                         <button class="search_pill_btn" type="submit" name="btnSearch">
                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-                                <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </button>
                     </form>
                 </div>
             </div>
 
-            <% if (student == null) { %>
-                <div class="taskBar_signUp_login">
-                    <div class="taskBar_signUp">
-                        <a class="taskBar_signUp_btn" href="signup.jsp">Sign Up</a>
-                    </div>
-                    <div class="taskBar_login">
-                        <a class="taskBar_login_btn" href="login.jsp">Login</a>
+            <% if (user == null) { %>
+            <div class="taskBar_signUp_login">
+                <div class="taskBar_signUp">
+                    <a class="taskBar_signUp_btn" href="signup.jsp">Sign Up</a>
+                </div>
+                <div class="taskBar_login">
+                    <a class="taskBar_login_btn" href="login.jsp">Login</a>
+                </div>
+            </div>
+            <% } else if (user.getRole().equals("Student")) {%>
+            <%Student student = (Student) session.getAttribute("LOGIN_USER");%>
+            <div class="user-account" style="display: flex; align-items: center; gap: 10px;">
+                <span class="user-greeting">Hi, <%= student.getName()%></span> 
+                <div class="user-icon-box">
+                    <i class="fa-solid fa-user"></i>
+
+                    <div class="dropdown-menu">
+                        <a href="profile.jsp">Thông tin cá nhân</a>
+                        <a href="MyCourseController">Khóa học</a>
+                        <a href="LogoutController">Đăng xuất</a>
+                        <a href="accountSetting.jsp">Cài đặt tài khoản</a>
                     </div>
                 </div>
-            <% } else { %>
-                <div class="user-account" style="display: flex; align-items: center; gap: 10px;">
-                    <span class="user-greeting">Hi, <%= student.getName() %></span> 
-                    <div class="user-icon-box">
-                        <i class="fa-solid fa-user"></i>
-                        
-                        <div class="dropdown-menu">
-                            <a href="profile.jsp">Thông tin cá nhân</a>
-                            <a href="MyCourseController">Khóa học</a>
-                            <a href="LogoutController">Đăng xuất</a>
-                            <a href="accountSetting.jsp">Cài đặt tài khoản</a>
-                        </div>
-                    </div>
+            </div>
+            <% } else if (user.getRole().equals("Admin")) {%>
+            <div class="user-account" style="display: flex; align-items: center; gap: 10px;">
+                <div class="user-icon-box">
+                    <i class="fa-solid fa-user"></i>
                 </div>
-            <% } %>
+            </div>
+            <%}%>
 
         </div>
 

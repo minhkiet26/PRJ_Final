@@ -28,22 +28,8 @@ public class CourseService {
             //Kiểm tra và lấy từ DB về
             if (cn != null) {
                 //viết câu SQL gửi lên DB
-<<<<<<< HEAD
                 String sql = "SELECT * FROM Course";
-=======
-                String sql = "SELECT [CourseID]\n"
-                        + "      ,[CourseName]\n"
-                        + "      ,[Description]\n"
-                        + "      ,[TuitionFee]\n"
-                        + "      ,[TotalLectures]\n"
-                        + "      ,[StartDate]\n"
-                        + "      ,[Schedule]\n"
-                        + "      ,[StudyTime]\n"
-                        + "      ,[ImageURL]\n"
-                        + "      ,[TeacherID]\n"
-                        + "      ,[NumberEnrolled]\n"
-                        + "  FROM [EducationDB].[dbo].[Course]";
->>>>>>> 06e12829e4907c9ee84cc7189c8634a4bb539631
+
                 //chuẩn bị để gửi xuống SQL
                 Statement st = cn.createStatement();
                 //Gửi câu SQL đi và Lưu dữ liệu từ Db vào table
@@ -79,26 +65,10 @@ public class CourseService {
         Course c = null;
         try {
             cn = DBUtils.getConnection();
-<<<<<<< HEAD
             String sql = "SELECT *"
                     + "FROM Course \n"
                     + "WHERE CourseID = ?"; //Câu sql để gửi xuống
-=======
-            String sql = "/****** Script for SelectTopNRows command from SSMS  ******/\n"
-                    + "SELECT [CourseID]\n"
-                    + "      ,[CourseName]\n"
-                    + "      ,[Description]\n"
-                    + "      ,[TuitionFee]\n"
-                    + "      ,[TotalLectures]\n"
-                    + "      ,[StartDate]\n"
-                    + "      ,[Schedule]\n"
-                    + "      ,[StudyTime]\n"
-                    + "      ,[ImageURL]\n"
-                    + "      ,[TeacherID]\n"
-                    + "      ,[NumberEnrolled]\n"
-                    + "  FROM [EducationDB].[dbo].[Course]\n"
-                    + "  where CourseID=?"; //Câu sql để gửi xuống
->>>>>>> 06e12829e4907c9ee84cc7189c8634a4bb539631
+
             PreparedStatement st = cn.prepareStatement(sql);
             st.setString(1, CourseID);//truyền tham số vào
             ResultSet table = st.executeQuery();//lưu bảng lấy được
