@@ -12,10 +12,23 @@
         <servlet-name>GetCourse</servlet-name>
         <servlet-class>controller.GetCourse</servlet-class>
     </servlet>
+
+    <servlet>
+        <servlet-name>MyCourseController</servlet-name>
+        <servlet-class>controller.MyCourseController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CancelCourseController</servlet-name>
+        <servlet-class>controller.CancelCourseController</servlet-class>
+    </servlet>
+
     <servlet>
         <servlet-name>LogoutController</servlet-name>
         <servlet-class>controller.LogoutController</servlet-class>
     </servlet>
+<<<<<<< HEAD
+
+=======
     <servlet>
         <servlet-name>GetAllUserController</servlet-name>
         <servlet-class>controller.GetAllUserController</servlet-class>
@@ -24,6 +37,7 @@
         <servlet-name>SignUpController</servlet-name>
         <servlet-class>controller.SignUpController</servlet-class>
     </servlet>
+>>>>>>> 06e12829e4907c9ee84cc7189c8634a4bb539631
     <servlet-mapping>
         <servlet-name>GetCoursesController</servlet-name>
         <url-pattern>/GetCoursesController</url-pattern>
@@ -36,10 +50,23 @@
         <servlet-name>GetCourse</servlet-name>
         <url-pattern>/GetCourse</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>MyCourseController</servlet-name>
+        <url-pattern>/MyCourseController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CancelCourseController</servlet-name>
+        <url-pattern>/CancelCourseController</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>LogoutController</servlet-name>
         <url-pattern>/LogoutController</url-pattern>
     </servlet-mapping>
+<<<<<<< HEAD
+
+=======
     <servlet-mapping>
         <servlet-name>GetAllUserController</servlet-name>
         <url-pattern>/GetAllUserController</url-pattern>
@@ -48,6 +75,7 @@
         <servlet-name>SignUpController</servlet-name>
         <url-pattern>/SignUpController</url-pattern>
     </servlet-mapping>
+>>>>>>> 06e12829e4907c9ee84cc7189c8634a4bb539631
     <session-config>
         <session-timeout>
             30

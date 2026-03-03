@@ -4,45 +4,48 @@
  */
 package controller;
 
+import entities.Course;
+import entities.Student;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import services.CourseService;
-import entities.Course;
 
 /**
  *
- * @author Admin
+ * @author ACER
  */
-public class GetCourse extends HttpServlet {
+public class MyCourseController extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try{
-            String CourseID = request.getParameter("courseid");//lấy id cần           
-            CourseService d = new CourseService();
-            Course c = d.getCourse(CourseID);
-            //lưu vào req
-            request.setAttribute("COURSE_OBJ", c);
+        try {
+            //lay student tu session
+            HttpSession session = request.getSession();
+            Student student = (Student) session.getAttribute("LOGIN_USER");
             
-            String source = request.getParameter("source");
-            //bien la co
-            boolean showCacelBtn = false;
-            
-            //Chỉ khi nào có tín hiệu "mycourses" thì mới bật nút Hủy
-            if("mycourses".equals(source)){
-                showCacelBtn = true;
+            if(student == null){
+                response.sendRedirect("login.jsp");
+                return;
             }
             
-            //Gửi request biến này sang JSP
-            request.setAttribute("SHOW_CANCEL_BTN", showCacelBtn);
-            
-            //đẩy lên CourseDetails để in kết quả
-            request.getRequestDispatcher("CourseDetail.jsp").forward(request, response);
-        }catch(Exception e){
+            String studentID = student.getStudentID();
+
+            //gọi xuống service để lấy danh sách môn
+            CourseService c = new CourseService();
+            ArrayList<Course> list = c.listOfRegisteredCourse(studentID);
+            //lưu vào req
+            request.setAttribute("MY_LIST_COURSE", list);
+            //đẩy lên SlideCart để xuất kết quả 
+            request.getRequestDispatcher("myCourse.jsp").forward(request, response);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
