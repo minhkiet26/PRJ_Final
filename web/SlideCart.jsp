@@ -1,5 +1,4 @@
 
-
 <%@page import="entities.Course"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

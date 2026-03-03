@@ -4,6 +4,7 @@
  */
 package services;
 
+import entities.Course;
 import entities.Student;
 import entities.Teacher;
 import entities.User;
@@ -11,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import mylib.DBUtils;
 import sun.security.util.Password;
 
@@ -26,7 +28,7 @@ public class UserServices {
                         + "      ,[Password]\n"
                         + "      ,[Role]\n"
                         + "      ,[PhoneNumber]\n"
-                        + "  FROM [OnlineCourseDB].[dbo].[User]\n"
+                        + "  FROM [EducationDB].[dbo].[User]\n"
                         + "  WHERE Email = ? and Password = ?";
                 //chuẩn bị cho câu sql gửi đi
                 PreparedStatement st = cn.prepareStatement(sql);
@@ -45,7 +47,7 @@ public class UserServices {
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         return u;
     }
@@ -202,22 +204,56 @@ public class UserServices {
         }
         return false;
     }
-    
-    public Boolean checkEmail(String Email){
+
+    public Boolean checkEmail(String Email) {
         Connection cn = null;
         try {
             cn = DBUtils.getConnection();
             if (cn != null) {
                 String sql = "SELECT * FROM [User] WHERE Email = '?';";
                 PreparedStatement st = cn.prepareStatement(sql);
-                st.setString(1,Email);
+                st.setString(1, Email);
                 ResultSet table = st.executeQuery();
-                if(table != null){
+                if (table != null) {
                     return true;
                 }
             }
         } catch (Exception e) {
         }
         return false;
+    }
+
+    public ArrayList<User> getAllUser() {
+        ArrayList<User> list = new ArrayList<>();
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                //viết câu SQL gửi lên DB
+                String sql = "SELECT [Email]\n"
+                        + "      ,[Password]\n"
+                        + "      ,[Role]\n"
+                        + "      ,[PhoneNumber]\n"
+                        + "FROM [EducationDB].[dbo].[User]";
+                //chuẩn bị để gửi xuống SQL
+                Statement st = cn.createStatement();
+                //Gửi câu SQL đi và Lưu dữ liệu từ Db vào table
+                ResultSet table = st.executeQuery(sql);
+                //đọc table lấy từng thành phần, tạo obj, lưu vào list gửi lên trên
+                if (table != null) {
+                    while (table.next()) {
+                        String Email = table.getString("Email");
+                        String Password = table.getString("Password");
+                        String Role = table.getString("Role");
+                        String PhoneNumber = table.getString("PhoneNumber");
+                        User u = new User(Email, Password, PhoneNumber, Role);
+                        list.add(u);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }
