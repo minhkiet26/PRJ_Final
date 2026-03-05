@@ -1,0 +1,152 @@
+/* 1. Tổng thể Card - Ép chiều cao cố định */
+.course-item {
+    height: 280px !important; /* Chiều cao cố định cho tất cả các thẻ */
+    display: flex;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Link bao quanh - Quan trọng để chia cột */
+.course-link-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    height: 100% !important;
+    text-decoration: none !important;
+    color: inherit;
+    align-items: stretch; /* Kéo giãn 2 bên bằng nhau */
+}
+
+/* 2. Cột Hình ảnh (Bên trái) - Chiếm đúng 40% */
+.course-thumb {
+    width: 30% !important; 
+    height: 100% !important; /* Luôn cao bằng thẻ cha */
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0; /* Không được co lại */
+}
+
+.course-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; /* Cắt ảnh vừa khung, không méo */
+    object-position: center;
+}
+
+/* 3. Cột Nội dung (Bên phải) - Chiếm 60% còn lại */
+.course-content {
+    width: 50% !important;
+    padding: 20px !important;
+    display: flex !important;
+    flex-direction: column !important; /* Xếp dọc từ trên xuống */
+    justify-content: space-between !important; /* Đẩy nội dung ra 2 đầu (trên/dưới) */
+    height: 100% !important;
+}
+
+/* Phần Trên: Tên + Thông tin */
+.course-top-info {
+    flex-grow: 1; /* Chiếm hết khoảng trống để đẩy giá tiền xuống đáy */
+}
+
+/* Tên khóa học - Giới hạn 2 dòng */
+.course-name {
+    font-size: 20px !important; /* Chữ vừa phải thôi, to quá bị tràn */
+    font-weight: 700 !important;
+    color: #002855;
+    margin-bottom: 12px !important;
+    line-height: 1.4 !important;
+    
+    /* Kỹ thuật cắt chữ thừa thành dấu ... */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Tối đa 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 56px; /* Cố định chiều cao cho tên (2 dòng * 28px) */
+}
+
+/* List thông tin nhỏ */
+.course-meta-list p {
+    font-size: 14px !important;
+    margin: 6px 0 !important;
+    color: #555 !important;
+    display: flex;
+    align-items: center;
+}
+
+.course-meta-list i {
+    font-size: 16px !important;
+    width: 25px !important;
+    text-align: center;
+    color: #007bff;
+    margin-right: 5px;
+}
+
+/* Phần Đáy */
+.course-bottom {
+    margin-top: auto; /* Đẩy xuống đáy cùng */
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+    
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* <--- QUAN TRỌNG: Đẩy trạng thái sang góc phải */
+    flex-shrink: 0;
+}
+
+/* 2. Style chung cho cái Huy hiệu (Badge) */
+.status-badge {
+    display: inline-flex;       /* Để icon và chữ nằm ngang */
+    align-items: center;
+    gap: 6px;                   /* Khoảng cách giữa Icon và Chữ */
+    
+    padding: 6px 14px;          /* Độ mập của nút */
+    border-radius: 50px;        /* Bo tròn như viên thuốc */
+    
+    font-size: 13px;            /* Chữ nhỏ gọn vừa phải */
+    font-weight: 600;           /* Chữ đậm cho dễ đọc */
+    text-transform: uppercase;  /* Viết hoa hết cho sang (tùy chọn) */
+    letter-spacing: 0.5px;
+    
+    transition: all 0.3s ease;
+}
+
+/* 3. Các màu sắc trạng thái (Màu dịu nhẹ hiện đại) */
+
+/* TRẠNG THÁI: ĐANG CHỜ (Màu Vàng Cam) */
+.status-pending {
+    background-color: #fff8e1;  /* Nền vàng nhạt */
+    color: #f57f17;             /* Chữ cam đậm */
+    border: 1px solid #ffe082;  /* Viền nhẹ */
+}
+
+/* TRẠNG THÁI: ĐÃ DUYỆT (Màu Xanh Lá) */
+.status-approved {
+    background-color: #e8f5e9;  /* Nền xanh lá nhạt */
+    color: #2e7d32;             /* Chữ xanh đậm */
+    border: 1px solid #c8e6c9;
+}
+
+/* TRẠNG THÁI: TỪ CHỐI (Màu Đỏ) */
+.status-rejected {
+    background-color: #ffebee;  /* Nền đỏ nhạt */
+    color: #c62828;             /* Chữ đỏ đậm */
+    border: 1px solid #ffcdd2;
+}
+
+/* TRẠNG THÁI: ĐÃ HỦY (Màu Xám) */
+.status-canceled {
+    background-color: #f5f5f5;  /* Nền xám nhạt */
+    color: #757575;             /* Chữ xám đậm */
+    border: 1px solid #e0e0e0;
+}
+
+/* Hiệu ứng khi di chuột vào (cho sinh động) */
+.course-item:hover .status-badge {
+    transform: scale(1.05); /* Phóng to nhẹ xíu khi hover vào thẻ */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}

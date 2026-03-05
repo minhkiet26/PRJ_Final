@@ -3,9 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package entities;
-public class Admin extends User{
+
+public class Admin extends User {
 
     public Admin() {
+
     }
-    
+
 }

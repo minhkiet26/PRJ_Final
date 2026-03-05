@@ -61,7 +61,7 @@ public class UserServices {
                 String sql = "SELECT [s].*, [u].*\n"
                         + "FROM [Student] AS [s]\n"
                         + "JOIN [User] AS [u] ON [s].[UserEmail] = [u].[Email]\n"
-                        + "WHERE [s].[UserEmail] = ?;";
+                        + "WHERE [s].[UserEmail] = ?";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setString(1, email);
                 ResultSet table = st.executeQuery();
@@ -83,6 +83,42 @@ public class UserServices {
         return s;
     }
 
+    public boolean updateStudent(String studentID, String password, String phone, String name) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sqlStudent = "UPDATE Student SET Name = ? WHERE StudentID = ?";
+                PreparedStatement pst1 = cn.prepareStatement(sqlStudent);
+                pst1.setString(1, name);
+                pst1.setString(2, studentID);
+                pst1.executeUpdate();
+
+                String sql = "UPDATE U\n"
+                        + "SET \n"
+                        + "    U.Password = ?,   \n"
+                        + "    U.PhoneNumber = ?    \n"
+                        + "FROM dbo.[User] U\n"
+                        + "JOIN Student S ON U.Email = S.UserEmail\n"
+                        + "WHERE S.StudentID = ?";
+
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, password);
+                st.setString(2, phone);
+                st.setString(3, studentID);
+
+                int check = st.executeUpdate();
+                if (check > 0) {
+                    return true;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public Teacher getTeacher(String email) {
         Connection cn = null;
         Teacher t = null;
@@ -92,7 +128,7 @@ public class UserServices {
                 String sql = "SELECT [t].*, [u].*\n"
                         + "FROM [Teacher] AS [t]\n"
                         + "JOIN [User] AS [u] ON [t].[UserEmail] = [u].[Email]\n"
-                        + "WHERE [t].[UserEmail] = ?;";
+                        + "WHERE [t].[UserEmail] = ?";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setString(1, email);
                 ResultSet table = st.executeQuery();
@@ -176,15 +212,23 @@ public class UserServices {
         try {
             cn = DBUtils.getConnection();
             if (cn != null) {
-                String sql = "SELECT * FROM [User] WHERE Email = '?';";
+                String sql = "SELECT Email FROM [User] WHERE Email = ?";
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setString(1, Email);
                 ResultSet table = st.executeQuery();
-                if (table != null) {
-                    return true;
+                if (table != null && table.next()) {
+                    return true; // Email đã tồn tại
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+            }
         }
         return false;
     }
