@@ -9,7 +9,8 @@ package entities;
  * @author ACER
  */
 public class Enrollment {
-    private int enrollmentID;
+
+    private String enrollmentID;
     private String studentID; // FK
     private int courseID;     // FK
     private String status;
@@ -20,14 +21,14 @@ public class Enrollment {
     // 2. CÁC THUỘC TÍNH BỔ SUNG (QUAN TRỌNG)
     // Dùng để hứng dữ liệu khi JOIN bảng
     // Thay vì chỉ lưu ID, ta lưu nguyên cả object để lấy tên, giá tiền, email...
-    private Student student; 
+    private Student student;
     private Course course;
 
     public Enrollment() {
     }
 
-    public Enrollment(int enrollmentID, String studentID, int courseID, String status, 
-                      String registerDate, Student student, Course course) {
+    public Enrollment(String enrollmentID, String studentID, int courseID, String status,
+            String registerDate, Student student, Course course) {
         this.enrollmentID = enrollmentID;
         this.studentID = studentID;
         this.courseID = courseID;
@@ -37,7 +38,7 @@ public class Enrollment {
         this.course = course;
     }
 
-    public int getEnrollmentID() {
+    public String getEnrollmentID() {
         return enrollmentID;
     }
 
@@ -73,7 +74,7 @@ public class Enrollment {
         return course;
     }
 
-    public void setEnrollmentID(int enrollmentID) {
+    public void setEnrollmentID(String enrollmentID) {
         this.enrollmentID = enrollmentID;
     }
 
@@ -108,5 +109,5 @@ public class Enrollment {
     public void setCourse(Course course) {
         this.course = course;
     }
-    
+
 }

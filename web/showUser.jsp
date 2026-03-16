@@ -17,6 +17,16 @@
                 <div class="search-wrapper">
                     <jsp:include page="searchBar.jsp"/>
                 </div>
+                <div class="view_student">
+                    <%
+                        Integer total = (Integer) request.getAttribute("TOTAL_STUDENT");
+                        if (total != null) {
+                    %>
+                    <p style="font-weight: bold; color: #0085FF;">Tổng số sinh viên: <%= total%></p>
+                    <%
+                        }
+                    %>
+                </div>
             </div>
 
             <%

@@ -4,6 +4,7 @@
  */
 package controller;
 
+import entities.Enrollment;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -12,28 +13,36 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import services.UserServices;
-import entities.User;
+import services.EnrollmentService;
 
 /**
  *
- * @author Admin
+ * @author ACER
  */
-@WebServlet(name = "UserManagerController", urlPatterns = {"/UserManagerController"})
-public class UserManagerController extends HttpServlet {
+@WebServlet(name = "ViewPendingStudentsController", urlPatterns = {"/ViewPendingStudentsController"})
+public class ViewPendingStudentsController extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            UserServices Us = new UserServices();
-            ArrayList<User> list = Us.getAllUser();//lấy hết user
-            int total = Us.sumStudent();
+            String id = request.getParameter("txtid");
             
-            request.setAttribute("LIST_USER", list);//lưu vào req để đưa lên
-            request.setAttribute("TOTAL_STUDENT", total);
-            request.getRequestDispatcher("showUser.jsp").forward(request, response);//chuyển trang
+            EnrollmentService es = new EnrollmentService();
+            ArrayList<Enrollment> list = es.getStudentOfCourse(id);
+            
+            request.setAttribute("LIST", list);
+            request.getRequestDispatcher("approvalList.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

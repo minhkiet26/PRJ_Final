@@ -9,8 +9,10 @@
 
 /* --- STYLE CHO KHU VỰC THANH SEARCH & NÚT ADD --- */
 .top-controls {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* Chia 3 cột đối xứng */
     align-items: center;
+    width: 100%;
     margin-bottom: 20px;
 }
 
@@ -30,9 +32,11 @@
     align-items: center;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     transition: all 0.3s ease;
-    margin-right: 20px;
+    margin-right: 0; /* SỬA TẠI ĐÂY: Xóa khoảng cách thừa để sát lề trái */
+    justify-self: start; /* THÊM VÀO: Ép sát lề trái */
     padding: 0;
     line-height: 1;
+    
 }
 
 .btn-add-circle:hover {
@@ -42,7 +46,22 @@
 }
 
 .search-wrapper {
-    flex-grow: 1;
+    justify-self: center; /* THÊM VÀO: Ép sát ra giữa */
+}
+
+/* --- STYLE CHO Ô TỔNG SỐ SINH VIÊN --- */
+.view_student {
+    justify-self: end; /* Ép dòng chữ sát hẳn về lề bên phải */
+    background-color: #f0f8ff; 
+    padding: 10px 20px;
+    border-radius: 50px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+}
+
+.view_student p {
+    margin: 0;
+    font-weight: bold; 
+    color: #0085FF;
 }
 
 /* --- HIỆU ỨNG CUỘN TRANG (TỪ TRÁI SANG & RÕ DẦN) --- */
@@ -101,11 +120,11 @@
     box-shadow: 0 6px 12px rgba(0,0,0,0.25);
 }
 
-.btn-edit { background-color: #007bff; }
-.btn-edit:hover { background-color: #0056b3; }
+.btn-edit, btn-save { background-color: #007bff; }
+.btn-edit, btn-save:hover { background-color: #0056b3; }
 
-.btn-delete { background-color: #dc3545; }
-.btn-delete:hover { background-color: #c82333; }
+.btn-delete, btn-delete { background-color: #dc3545; }
+.btn-delete, btn-delete:hover { background-color: #c82333; }
 
 .btn-save {
     padding: 10px 20px;

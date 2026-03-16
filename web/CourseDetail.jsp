@@ -1,3 +1,4 @@
+<%@page import="entities.User"%>
 <%@page import="entities.Course"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -55,28 +56,41 @@
 
                     <div class="card-body">
                         <div class="price-tag"><%= c.getTuitionFee()%> đ</div>
-                        
+
                         <%
+                            User user = (User) session.getAttribute("LOGIN_USER");
+                            if (user == null) {
+                                response.sendRedirect("login.jsp");
+                                return;
+                            }
                             //Boolean. Khi đó nó là một Object nên mới có thể so sánh với null
                             Boolean showCancelBtn = (Boolean) request.getAttribute("SHOW_CANCEL_BTN");
-                            if(showCancelBtn == null) showCancelBtn = false;
+                            if (showCancelBtn == null) {
+                                showCancelBtn = false;
+                            }
                         %>
-                        <%if(showCancelBtn) {%>
-                        <form action="CancelCourseController" method="post">
-                            <input type="hidden" name="courseid" value="<%= c.getCourseID()%>">
+                        <%if ("Admin".equals(user.getRole())) {%>
+                        <p style="color: #666; font-style: italic; background: #f5f5f5; padding: 10px; border-radius: 5px; text-align: center;">
+                            <i class="fa-solid fa-eye"></i> 
+                        </p>
+                        <%} else {%>
+                            <%if (showCancelBtn) {%>
+                            <form action="CancelCourseController" method="post">
+                                <input type="hidden" name="courseid" value="<%= c.getCourseID()%>">
 
-                            <button type="submit" class="btn-cancel"> 
-                                Hủy đăng ký môn học
-                            </button>
-                        </form>
-                        <%}else{%>
-                        <form action="RegisterCourseController" method="post">
-                            <input type="hidden" name="courseid" value="<%= c.getCourseID()%>">
+                                <button type="submit" class="btn-cancel"> 
+                                    Hủy đăng ký môn học
+                                </button>
+                            </form>
+                            <%} else {%>
+                            <form action="RegisterCourseController" method="post">
+                                <input type="hidden" name="courseid" value="<%= c.getCourseID()%>">
 
-                            <button type="submit" class="btn-register"> 
-                                Đăng ký khóa học
-                            </button>
-                        </form>
+                                <button type="submit" class="btn-register"> 
+                                    Đăng ký khóa học
+                                </button>
+                            </form>
+                            <%}%>
                         <%}%>
 
                         <ul class="info-list">
