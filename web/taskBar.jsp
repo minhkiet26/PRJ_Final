@@ -36,7 +36,9 @@
                                 if (user != null && "Admin".equals(user.getRole())) {
                             %>
                             <a href="UserManagerController">Quản lý người dùng</a>
-                            <a href="LogoutController">Đăng xuất</a>
+                            <a href="BannedUserController">Người dùng bị Ban</a>
+                            <a href="CourseManagerController">Quản lý khóa học</a>
+                            <a href="LogoutController">Đăng xuất</a>                         
                             <%
                                 }
                             %>

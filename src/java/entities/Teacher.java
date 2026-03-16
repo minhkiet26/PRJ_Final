@@ -20,8 +20,8 @@ public class Teacher extends User{
         this.Name = Name;
     }
 
-    public Teacher( String Email, String Password, String PhoneNumber, String Role, String TeacherID, String Name) {
-        super( Email, Password, PhoneNumber, Role);
+    public Teacher( String Email, String Password, String PhoneNumber, String Role,String Status, String TeacherID, String Name) {
+        super(Email, Password, PhoneNumber, Role, Status);
         this.TeacherID = TeacherID;
         this.Name = Name;
     }

@@ -46,9 +46,6 @@
                                        oninput="this.setCustomValidity('')"
                                        placeholder="Password" required="">
                             </div>
-                            <div class="pass-link">
-                                <a href="#">Forgot password?</a>
-                            </div>
                             <div><%
                                 String msg = (String) request.getAttribute("ERROR");
                                 if (msg != null) {
@@ -57,6 +54,18 @@
                                     out.print("</p>");
                                 }
                                 %></div>
+                            <div><%
+                                String msgBan = (String) request.getAttribute("ERROR_BANNED");
+                                if (msgBan != null) {
+                                    out.print("<p style='color: red'>");
+                                    out.print(msgBan);
+                                    out.print("</p>");
+                                }
+                                %></div>
+                            <div class="pass-link">
+                                <a href="#">Forgot password?</a>
+                            </div>
+
                             <div class="field btn">
                                 <div class="btn-layer"></div>
                                 <input type="submit" value="Login">

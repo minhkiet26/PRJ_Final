@@ -12,18 +12,26 @@ function toggleFullName(show) {
 
 const signupForm = document.querySelector('form.signup');
 
-signupForm.addEventListener('submit', function (event) {
-    checkEmail();
-    checkPassword();
-    checkValidatePasswords();
-    checkRole();
-    checkName();
+if (signupForm) {
+    signupForm.addEventListener('submit', function (event) {
+        try {
+            checkEmail();
+            checkPassword();
+            checkValidatePasswords();
+            checkRole();
+            checkName();
 
-    // Kiểm tra có thuộc tính nào người dùng nhập vào bị lỗi không
-    if (!this.checkValidity()) {
-        event.preventDefault(); // chặn submit
-    }
-});
+            // Kiểm tra có thuộc tính nào người dùng nhập vào bị lỗi không
+            if (!this.checkValidity()) {
+                event.preventDefault(); // Chặn submit
+            }
+        } catch (error) {
+            // Nếu JS có lỗi ẩn bên trong các hàm check, in ra console và CŨNG CHẶN submit để an toàn
+            console.error("Lỗi JS trong quá trình validate:", error);
+            event.preventDefault();
+        }
+    });
+}
 
 function checkPassword() {
     const password = document.querySelector('input[name="PASSWORD"]');
@@ -46,6 +54,10 @@ function checkValidatePasswords() {
     const confirm = document.querySelector('input[name="CONFIRM_PASSWORD"]');
     const errorMsg = document.getElementById('error-msg-confirmpassword');
 
+    if (!confirm) {
+        return;
+    }//dòng này để kiểm tra nếu form đó không dùng confirm password thì sẽ bỏ qua hàm này
+
     if (confirm.value === "") {
         //viết lỗi để gửi
         errorMsg.innerText = "Không được để trống!";
@@ -64,7 +76,7 @@ function checkEmail() {
     const emailInput = document.querySelector('input[name="EMAIL"]');
     const errorMsg = document.getElementById('error-msg-email');
     const emailValue = emailInput.value.trim();
-    if(serverError){
+    if (serverError) {
         serverError.innerText = "";
     }
 
@@ -89,6 +101,8 @@ function checkName() {
     const nameInput = document.querySelector('input[name="FULLNAME"]');
     const errorMsg = document.getElementById('error-msg-name');
 
+    if (!nameField || !nameInput)
+        return;
     // Chỉ kiểm tra nếu ô tên đang hiển thị
     if (!nameField.classList.contains('hidden')) {
         const value = nameInput.value.trim();

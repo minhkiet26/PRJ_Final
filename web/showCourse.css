@@ -143,10 +143,11 @@
 
 /* --- STYLE CHO BẢNG EDIT (HIỆU ỨNG SỔ XUỐNG TỪ TỪ) --- */
 .edit-panel {
-    max-height: 0; /* Thu nhỏ chiều cao về 0 */
+    max-height: 0;
     opacity: 0;
-    overflow: hidden; /* Giấu phần nội dung bị tràn */
-    padding: 0 25px; /* Giữ padding ngang để không bị giật form */
+    overflow-y: hidden; /* Ẩn nội dung khi thu gọn */
+    overflow-x: hidden;
+    padding: 0 25px;
     margin: 0;
     border: 1px solid transparent;
     background-color: #ffffff;
@@ -156,12 +157,32 @@
 }
 
 .edit-panel.show {
-    max-height: 800px; /* Tăng thêm chút để chứa cụm nút Role mới */
+    max-height: 450px !important; /* Chiều cao tối đa của form, nếu dài hơn sẽ hiện thanh trượt */
     opacity: 1;
     padding: 25px;
     margin-top: 10px;
     margin-bottom: 20px;
     border-color: #e0e0e0;
+    overflow-y: auto !important; /* 🟢 QUAN TRỌNG: Lệnh này bật thanh trượt dọc */
+}
+
+/* 🟢 LÀM ĐẸP THANH TRƯỢT (Dành cho Chrome/Edge/Safari) */
+.edit-panel::-webkit-scrollbar {
+    width: 8px; /* Độ rộng của thanh trượt */
+}
+
+.edit-panel::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Màu nền của rãnh trượt */
+    border-radius: 10px;
+}
+
+.edit-panel::-webkit-scrollbar-thumb {
+    background: #c1c1c1; /* Màu của thanh nắm kéo */
+    border-radius: 10px;
+}
+
+.edit-panel::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8; /* Màu khi di chuột vào thanh kéo */
 }
 
 .field {
@@ -341,7 +362,7 @@
     color: #dc3545;
 }
 
-section-title {
+.section-title {
     margin-top: 30px;
     padding-bottom: 10px;
     border-bottom: 2px solid #eee;
@@ -354,3 +375,27 @@ section-title {
     cursor: not-allowed;
 }
 
+/* ==============================================================
+   🟢 BỔ SUNG: STYLE CHO FORM NHIỀU TRƯỜNG CỦA MANAGE COURSES 
+   ============================================================== */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Chia form thành 2 cột đều nhau */
+    gap: 15px 25px; /* Khoảng cách giữa các hàng và các cột */
+    margin-top: 15px;
+}
+
+.form-grid .field {
+    margin-bottom: 0; /* Reset margin mặc định của class .field vì đã dùng gap của grid */
+}
+
+/* Class này để ép một trường chiếm toàn bộ chiều ngang của form */
+.full-width {
+    grid-column: span 2;
+}
+
+/* Mở rộng modal thêm mới dành riêng cho Course */
+#addCourseModal .modal-content {
+    width: 700px;
+    max-width: 95%;
+}

@@ -11,8 +11,9 @@
     <body>
         <div class="taskBar_search">
             <div class="search_wrapper">
-                <form action="Search" method="post" style="display: flex; align-items: center; width: 100%;">
-                    <input class="search_pill_text" type="text" placeholder="Search" name="textSearch">
+                <form action="SearchMainController" method="post" style="display: flex; align-items: center; width: 100%;">
+                    <input type="hidden" name="searchTarget" value="${param.searchTarget}">
+                    <input class="search_pill_text" type="text" placeholder="Search" name="txtSearch">
                     <button class="search_pill_btn" type="submit" name="btnSearch">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

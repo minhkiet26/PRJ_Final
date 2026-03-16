@@ -13,6 +13,7 @@ public class User {
     private String Password;
     private String PhoneNumber;
     private String Role;
+    private String Status;
 
     public User() {
     }
@@ -22,6 +23,22 @@ public class User {
         this.Password = Password;
         this.PhoneNumber = PhoneNumber;
         this.Role = Role;
+    }
+
+    public User(String Email, String Password, String PhoneNumber, String Role, String Status) {
+        this.Email = Email;
+        this.Password = Password;
+        this.PhoneNumber = PhoneNumber;
+        this.Role = Role;
+        this.Status = Status;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
     }
 
     public String getEmail() {

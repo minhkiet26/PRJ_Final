@@ -26,13 +26,12 @@
     </servlet>
     <servlet>
         <servlet-name>GetAllUserController</servlet-name>
-        <servlet-class>controller.GetAllUserController</servlet-class>
+        <servlet-class>controller.BanUser</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SignUpController</servlet-name>
         <servlet-class>controller.SignUpController</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>GetCoursesController</servlet-name>
         <url-pattern>/GetCoursesController</url-pattern>
@@ -65,11 +64,9 @@
         <servlet-name>SignUpController</servlet-name>
         <url-pattern>/SignUpController</url-pattern>
     </servlet-mapping>
-
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-
     <welcome-file-list>
         <welcome-file>GetCoursesController</welcome-file>
     </welcome-file-list>

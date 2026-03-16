@@ -7,6 +7,7 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,14 +16,37 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-public class GetAllUserController extends HttpServlet {
+@WebServlet(name = "SearchMainController", urlPatterns = {"/SearchMainController"})
+public class SearchMainController extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try{
-        }catch(Exception e){
-            
+        String url = "";
+        String target = request.getParameter("searchTarget");//user || course
+
+        try {
+            if (target != null) {
+                switch (target) {
+                    case "user":
+                        url = "SearchUserController";
+                        break;
+                    case "course":
+                        url = "SearchCourseController";
+                        break;
+                        case "bannedUser":
+                        url = "SearchBannedUserController";
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        request.getRequestDispatcher(url).forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

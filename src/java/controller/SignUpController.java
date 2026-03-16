@@ -24,13 +24,12 @@ public class SignUpController extends HttpServlet {
         try {
             String Email = request.getParameter("EMAIL");
             String PassWord = request.getParameter("PASSWORD");
-            String ConfirmPassWord = request.getParameter("CONFIRM_PASSWORD");
             String Role = request.getParameter("ROLE");
             String Name = request.getParameter("FULLNAME");
             String PhoneNumber = null;
 
             UserServices u = new UserServices();
-            if (!u.checkEmail(Email)) {
+            if (u.checkEmail(Email)) {
                 request.setAttribute("errorMessage", "Email đã được sử dụng");
                 //giữ lại nội dung người dùng đã nhập
                 request.setAttribute("oldEmail", Email);
