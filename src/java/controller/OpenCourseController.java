@@ -7,44 +7,34 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import services.UserServices;
+import services.CourseService;
 
 /**
  *
  * @author Admin
  */
-public class SignUpController extends HttpServlet {
+@WebServlet(name = "OpenCourseController", urlPatterns = {"/OpenCourseController"})
+public class OpenCourseController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String Email = request.getParameter("EMAIL");
-            String PassWord = request.getParameter("PASSWORD");
-            String Role = request.getParameter("ROLE");
-            String Name = request.getParameter("FULLNAME");
-            String PhoneNumber = null;
-
-            UserServices u = new UserServices();
-            if (u.checkEmail(Email)) {
-                request.setAttribute("errorMessage", "Email đã được sử dụng");
-                //giữ lại nội dung người dùng đã nhập
-                request.setAttribute("oldEmail", Email);
-                request.getRequestDispatcher("signup.jsp").forward(request, response);
-            } else {
-                u.postUser(Email, PassWord, PhoneNumber, Role);
-                if ("student".equalsIgnoreCase(Role)) {
-                    u.postStudent(Name, Email);
-                } else {
-                    u.postTeacher(Name, Email);
+            String courseID = request.getParameter("courseID");
+            CourseService cs = new CourseService();
+            if (courseID != null && !courseID.isEmpty()) {
+                if (cs.OpenCourseById(courseID)) {
+                    response.sendRedirect("CourseManagerController");
+                    return;
                 }
+                response.sendRedirect("CourseManagerController");
             }
-
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

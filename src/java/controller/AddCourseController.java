@@ -7,44 +7,50 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import services.UserServices;
+import services.CourseService;
 
 /**
  *
  * @author Admin
  */
-public class SignUpController extends HttpServlet {
+@WebServlet(name = "AddCourseController", urlPatterns = {"/AddCourseController"})
+public class AddCourseController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try {
-            String Email = request.getParameter("EMAIL");
-            String PassWord = request.getParameter("PASSWORD");
-            String Role = request.getParameter("ROLE");
-            String Name = request.getParameter("FULLNAME");
-            String PhoneNumber = null;
+            String courseName = request.getParameter("CourseName");
+            String teacherID = request.getParameter("TeacherID");
+            String studyTime = request.getParameter("StudyTime");
+            String schedule = request.getParameter("Schedule");
+            String startDateStr = request.getParameter("StartDate");
+//            String Status = request.getParameter("enrollmentStatus");
+            String imageURL = request.getParameter("ImageURL");
+            String description = request.getParameter("Description");
+            String tuitionFeeStr = request.getParameter("TuitionFee");
+            String totalLecturesStr = request.getParameter("TotalLectures");
+            String numberEnrolledStr = request.getParameter("NumberEnrolled");
 
-            UserServices u = new UserServices();
-            if (u.checkEmail(Email)) {
-                request.setAttribute("errorMessage", "Email đã được sử dụng");
-                //giữ lại nội dung người dùng đã nhập
-                request.setAttribute("oldEmail", Email);
-                request.getRequestDispatcher("signup.jsp").forward(request, response);
+            CourseService cs = new CourseService();
+            if (cs.AddCourse(courseName, teacherID, studyTime, schedule, startDateStr, imageURL, description, tuitionFeeStr, totalLecturesStr, numberEnrolledStr)) {
+                request.setAttribute("STATUS", "Thêm khóa học thành công!");
+                request.getRequestDispatcher("CourseManagerController").forward(request, response);
+                return;
             } else {
-                u.postUser(Email, PassWord, PhoneNumber, Role);
-                if ("student".equalsIgnoreCase(Role)) {
-                    u.postStudent(Name, Email);
-                } else {
-                    u.postTeacher(Name, Email);
-                }
+                request.setAttribute("STATUS", "Lỗi: Không thể thêm khóa học. Vui lòng kiểm tra lại!");
+                request.getRequestDispatcher("CourseManagerController").forward(request, response);
+                return;
             }
-
         } catch (Exception e) {
-
+            e.printStackTrace();
+            request.setAttribute("STATUS", "Đã xảy ra lỗi hệ thống: " + e.getMessage());
+            request.getRequestDispatcher("CourseManagerController").forward(request, response);
         }
     }
 

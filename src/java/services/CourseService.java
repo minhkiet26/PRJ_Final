@@ -28,22 +28,8 @@ public class CourseService {
             //Kiểm tra và lấy từ DB về
             if (cn != null) {
                 //viết câu SQL gửi lên DB
-<<<<<<< HEAD
                 String sql = "SELECT * FROM Course";
-=======
-                String sql = "SELECT [CourseID]\n"
-                        + "      ,[CourseName]\n"
-                        + "      ,[Description]\n"
-                        + "      ,[TuitionFee]\n"
-                        + "      ,[TotalLectures]\n"
-                        + "      ,[StartDate]\n"
-                        + "      ,[Schedule]\n"
-                        + "      ,[StudyTime]\n"
-                        + "      ,[ImageURL]\n"
-                        + "      ,[TeacherID]\n"
-                        + "      ,[NumberEnrolled]\n"
-                        + "  FROM [EducationDB].[dbo].[Course]";
->>>>>>> 06e12829e4907c9ee84cc7189c8634a4bb539631
+
                 //chuẩn bị để gửi xuống SQL
                 Statement st = cn.createStatement();
                 //Gửi câu SQL đi và Lưu dữ liệu từ Db vào table
@@ -62,8 +48,9 @@ public class CourseService {
                         String ImageURL = table.getString("ImageURL");
                         String TeacherID = table.getString("TeacherID");
                         String NumberEnrolled = table.getString("NumberEnrolled");
+                        String Status = table.getString("Status");
 
-                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, null);
+                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, Status);
                         list.add(c);
                     }
                 }
@@ -79,26 +66,10 @@ public class CourseService {
         Course c = null;
         try {
             cn = DBUtils.getConnection();
-<<<<<<< HEAD
             String sql = "SELECT *"
                     + "FROM Course \n"
                     + "WHERE CourseID = ?"; //Câu sql để gửi xuống
-=======
-            String sql = "/****** Script for SelectTopNRows command from SSMS  ******/\n"
-                    + "SELECT [CourseID]\n"
-                    + "      ,[CourseName]\n"
-                    + "      ,[Description]\n"
-                    + "      ,[TuitionFee]\n"
-                    + "      ,[TotalLectures]\n"
-                    + "      ,[StartDate]\n"
-                    + "      ,[Schedule]\n"
-                    + "      ,[StudyTime]\n"
-                    + "      ,[ImageURL]\n"
-                    + "      ,[TeacherID]\n"
-                    + "      ,[NumberEnrolled]\n"
-                    + "  FROM [EducationDB].[dbo].[Course]\n"
-                    + "  where CourseID=?"; //Câu sql để gửi xuống
->>>>>>> 06e12829e4907c9ee84cc7189c8634a4bb539631
+
             PreparedStatement st = cn.prepareStatement(sql);
             st.setString(1, CourseID);//truyền tham số vào
             ResultSet table = st.executeQuery();//lưu bảng lấy được
@@ -115,8 +86,9 @@ public class CourseService {
                     String ImageURL = table.getString("ImageURL");
                     String TeacherID = table.getString("TeacherID");
                     String NumberEnrolled = table.getString("NumberEnrolled");
+                    String Status = table.getString("Status");
 
-                    c = new Course(courseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, null);
+                    c = new Course(courseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, Status);
                 }
             }
         } catch (Exception e) {
@@ -159,9 +131,9 @@ public class CourseService {
                         String ImageURL = table.getString("ImageURL");
                         String TeacherID = table.getString("TeacherID");
                         String NumberEnrolled = table.getString("NumberEnrolled");
-                        String EnrollmentStatus = table.getString("EnrollmentStatus");
-                        
-                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, EnrollmentStatus);
+                        String Status = table.getString("Status");
+
+                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, Status);
                         list.add(c);
                     }
                 }
@@ -194,5 +166,136 @@ public class CourseService {
             e.printStackTrace();
         }
         return "Hủy đăng ký khóa học thành công!!";
+    }
+
+    public boolean DeleteCourseById(String userID) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "UPDATE [dbo].[Course]\n"
+                        + "   SET\n"
+                        + "     [Status] = 'Close'\n"
+                        + " WHERE CourseID = ?";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, userID);
+                int check = st.executeUpdate();
+                if (check > 0) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean OpenCourseById(String userID) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "UPDATE [dbo].[Course]\n"
+                        + "   SET\n"
+                        + "     [Status] = 'Open'\n"
+                        + " WHERE CourseID = ?";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, userID);
+                int check = st.executeUpdate();
+                if (check > 0) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean AddCourse(String courseName, String teacherID, String studyTime,
+            String schedule, String startDateStr,
+            String imageURL, String description, String tuitionFeeStr,
+            String totalLecturesStr, String numberEnrolledStr) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "INSERT INTO [dbo].[Course] ([CourseName], [Description], [TuitionFee], [TotalLectures], [StartDate], [Schedule], [StudyTime], [ImageURL], [NumberEnrolled], [TeacherID]) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                PreparedStatement st = cn.prepareStatement(sql);
+
+                st.setString(1, courseName);
+
+                st.setString(2, description);
+
+                st.setDouble(3, Double.parseDouble(tuitionFeeStr));
+
+                st.setInt(4, Integer.parseInt(totalLecturesStr));
+
+                st.setString(5, startDateStr);
+
+                st.setString(6, schedule);
+
+                st.setString(7, studyTime);
+
+                st.setString(8, imageURL);
+
+                st.setInt(9, Integer.parseInt(numberEnrolledStr));
+
+                st.setInt(10, Integer.parseInt(teacherID));
+
+                int result = st.executeUpdate();
+                return result > 0;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public ArrayList<Course> SearchCourse(String name) {
+        Connection cn = null;
+        ArrayList<Course> list = new ArrayList<>();
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "SELECT [CourseID]\n"
+                        + "      ,[CourseName]\n"
+                        + "      ,[Description]\n"
+                        + "      ,[TuitionFee]\n"
+                        + "      ,[TotalLectures]\n"
+                        + "      ,[StartDate]\n"
+                        + "      ,[Schedule]\n"
+                        + "      ,[StudyTime]\n"
+                        + "      ,[ImageURL]\n"
+                        + "      ,[NumberEnrolled]\n"
+                        + "      ,[TeacherID]\n"
+                        + "      ,[Status]\n"
+                        + "FROM [dbo].[Course]\n"
+                        + "WHERE [CourseName] LIKE ?;";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, "%" + name + "%");
+                ResultSet table = st.executeQuery();
+                if (table != null) {
+                    while (table.next()) {
+                        String CourseID = table.getString("CourseID");
+                        String CourseName = table.getString("CourseName");
+                        String Description = table.getString("Description");
+                        String TuitionFee = table.getString("TuitionFee");
+                        String TotalLectures = table.getString("TotalLectures");
+                        String StartDate = table.getString("StartDate");
+                        String Schedule = table.getString("Schedule");
+                        String StudyTime = table.getString("StudyTime");
+                        String ImageURL = table.getString("ImageURL");
+                        String TeacherID = table.getString("TeacherID");
+                        String NumberEnrolled = table.getString("NumberEnrolled");
+                        String Status = table.getString("Status");
+                        list.add(new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, Status));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

@@ -6,45 +6,35 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import services.UserServices;
+import services.CourseService;
+import entities.Course;
 
 /**
  *
  * @author Admin
  */
-public class SignUpController extends HttpServlet {
+@WebServlet(name = "SearchCourseController", urlPatterns = {"/SearchCourseController"})
+public class SearchCourseController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String Email = request.getParameter("EMAIL");
-            String PassWord = request.getParameter("PASSWORD");
-            String Role = request.getParameter("ROLE");
-            String Name = request.getParameter("FULLNAME");
-            String PhoneNumber = null;
-
-            UserServices u = new UserServices();
-            if (u.checkEmail(Email)) {
-                request.setAttribute("errorMessage", "Email đã được sử dụng");
-                //giữ lại nội dung người dùng đã nhập
-                request.setAttribute("oldEmail", Email);
-                request.getRequestDispatcher("signup.jsp").forward(request, response);
-            } else {
-                u.postUser(Email, PassWord, PhoneNumber, Role);
-                if ("student".equalsIgnoreCase(Role)) {
-                    u.postStudent(Name, Email);
-                } else {
-                    u.postTeacher(Name, Email);
-                }
+            String searchValue = request.getParameter("txtSearch");//nội dung người dùng nhập
+            CourseService cs = new CourseService();
+            ArrayList<Course> list = cs.SearchCourse(searchValue);
+            if(list != null && !list.isEmpty()){
+                request.setAttribute("LIST_COURSE_SEARCH", list);
+                request.getRequestDispatcher("showCourse.jsp").forward(request, response);
             }
-
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

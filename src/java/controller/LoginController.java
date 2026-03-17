@@ -30,24 +30,32 @@ public class LoginController extends HttpServlet {
             String password = request.getParameter("txtpassword");
             UserServices Us = new UserServices();
             User u = Us.getUser(email, password);
-            String roleCheck = u.getRole();
-            if (roleCheck != null) {
-                if ("Admin".equals(roleCheck)) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("LOGIN_USER", u);//lưu vào session
-                    request.getRequestDispatcher("GetCoursesController").forward(request, response);
-                } else if ("Student".equals(roleCheck)) {
-                    Student s = Us.getStudent(email);
-                    //Lưu kết quả vào session để sau này còn sử sụng
-                    HttpSession session = request.getSession();
-                    session.setAttribute("LOGIN_USER", s);
-                    request.getRequestDispatcher("GetCoursesController").forward(request, response);
+            if (u != null) {
+                if ("Active".equalsIgnoreCase(u.getStatus())) {
+                    String roleCheck = u.getRole();
+                    if (roleCheck != null) {
+                        if ("Admin".equals(roleCheck)) {
+                            HttpSession session = request.getSession();
+                            session.setAttribute("LOGIN_USER", u);//lưu vào session
+                            request.getRequestDispatcher("GetCoursesController").forward(request, response);
+                        } else if ("Student".equals(roleCheck)) {
+                            Student s = Us.getStudent(email);
+                            //Lưu kết quả vào session để sau này còn sử sụng
+                            HttpSession session = request.getSession();
+                            session.setAttribute("LOGIN_USER", s);
+                            request.getRequestDispatcher("GetCoursesController").forward(request, response);
+                        } else {
+                            Teacher t = Us.getTeacher(email);
+                            //Lưu kết quả vào session để sau này còn sử sụng
+                            HttpSession session = request.getSession();
+                            session.setAttribute("LOGIN_USER", t);
+                            request.getRequestDispatcher("GetCoursesController").forward(request, response);
+                        }
+                    }
                 } else {
-                    Teacher t = Us.getTeacher(email);
-                    //Lưu kết quả vào session để sau này còn sử sụng
-                    HttpSession session = request.getSession();
-                    session.setAttribute("LOGIN_USER", t);
-                    request.getRequestDispatcher("GetCoursesController").forward(request, response);
+                    String error = "Banned User";//thông báo lỗi
+                    request.setAttribute("ERROR_BANNED", error);//đẩy vào req
+                    request.getRequestDispatcher("login.jsp").forward(request, response);//chuyển trang để hiển thị lên cho người dùng
                 }
             } else {
                 String error = "Wrong Email or Password";//thông báo lỗi

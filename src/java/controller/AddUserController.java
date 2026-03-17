@@ -7,6 +7,7 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,24 +17,26 @@ import services.UserServices;
  *
  * @author Admin
  */
-public class SignUpController extends HttpServlet {
+@WebServlet(name = "AddUserController", urlPatterns = {"/AddUserController"})
+public class AddUserController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try {
             String Email = request.getParameter("EMAIL");
             String PassWord = request.getParameter("PASSWORD");
             String Role = request.getParameter("ROLE");
             String Name = request.getParameter("FULLNAME");
-            String PhoneNumber = null;
+            String PhoneNumber = request.getParameter("PHONENUMBER");
 
             UserServices u = new UserServices();
             if (u.checkEmail(Email)) {
                 request.setAttribute("errorMessage", "Email đã được sử dụng");
                 //giữ lại nội dung người dùng đã nhập
                 request.setAttribute("oldEmail", Email);
-                request.getRequestDispatcher("signup.jsp").forward(request, response);
+                request.getRequestDispatcher("UserManagerController").forward(request, response);
             } else {
                 u.postUser(Email, PassWord, PhoneNumber, Role);
                 if ("student".equalsIgnoreCase(Role)) {
@@ -41,10 +44,10 @@ public class SignUpController extends HttpServlet {
                 } else {
                     u.postTeacher(Name, Email);
                 }
+                request.getRequestDispatcher("UserManagerController").forward(request, response);
             }
-
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

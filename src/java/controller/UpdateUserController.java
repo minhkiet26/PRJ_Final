@@ -7,6 +7,7 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,35 +17,39 @@ import services.UserServices;
  *
  * @author Admin
  */
-public class SignUpController extends HttpServlet {
+@WebServlet(name = "UpdateUserController", urlPatterns = {"/UpdateUserController"})
+public class UpdateUserController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            String Email = request.getParameter("EMAIL");
-            String PassWord = request.getParameter("PASSWORD");
-            String Role = request.getParameter("ROLE");
-            String Name = request.getParameter("FULLNAME");
-            String PhoneNumber = null;
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String phoneNumber = request.getParameter("phoneNumber");
+            String role = request.getParameter("role");
+            String Name = request.getParameter("name");
+            boolean isUpdated = false;
+            String message = "";
 
-            UserServices u = new UserServices();
-            if (u.checkEmail(Email)) {
-                request.setAttribute("errorMessage", "Email đã được sử dụng");
-                //giữ lại nội dung người dùng đã nhập
-                request.setAttribute("oldEmail", Email);
-                request.getRequestDispatcher("signup.jsp").forward(request, response);
+            UserServices us = new UserServices();
+            if ("Student".equalsIgnoreCase(role)) {
+                // Lưu ý: Đảm bảo hàm này nhận đúng tham số bạn truyền vào
+                isUpdated = us.updateStudent(email, password, phoneNumber, Name);
             } else {
-                u.postUser(Email, PassWord, PhoneNumber, Role);
-                if ("student".equalsIgnoreCase(Role)) {
-                    u.postStudent(Name, Email);
-                } else {
-                    u.postTeacher(Name, Email);
-                }
+                isUpdated = us.updateTeacher(email, password, role, phoneNumber, Name);
             }
 
-        } catch (Exception e) {
+            if (isUpdated) {
+                message = "Update successfully!";
+            } else {
+                message = "Update failed!";
+            }
 
+            request.getSession().setAttribute("STATUS", message);
+            response.sendRedirect("UserManagerController");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

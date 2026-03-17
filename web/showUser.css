@@ -1,0 +1,356 @@
+.user-list-container {
+    max-width: 800px;
+    margin: 20px auto;
+    font-family: sans-serif;
+    /* Tránh việc scroll ngang khi que đang nằm bên trái màn hình */
+    overflow-x: hidden;
+    padding: 10px;
+}
+
+/* --- STYLE CHO KHU VỰC THANH SEARCH & NÚT ADD --- */
+.top-controls {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.btn-add-circle {
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    margin-right: 20px;
+    padding: 0;
+    line-height: 1;
+}
+
+.btn-add-circle:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+    background-color: #0056b3;
+}
+
+.search-wrapper {
+    flex-grow: 1;
+}
+
+/* --- HIỆU ỨNG CUỘN TRANG (TỪ TRÁI SANG & RÕ DẦN) --- */
+.user-item {
+    opacity: 0; /* Mờ hoàn toàn */
+    transform: translateX(-60px); /* Bắt đầu từ bên trái 60px */
+    transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Class này sẽ được JS tự động thêm vào khi cuộn tới */
+.user-item.show-on-scroll {
+    opacity: 1; /* Rõ lên */
+    transform: translateX(0); /* Về đúng vị trí */
+}
+
+/* --- STYLE CHO QUE (VIÊN CON NHỘNG) --- */
+.user-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fcfcfc;
+    border: 1px solid #e0e0e0;
+    padding: 15px 30px;
+    margin-top: 15px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.user-bar:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    border-color: #d0d0d0;
+}
+
+.user-email {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+}
+
+/* --- STYLE CHO CÁC NÚT --- */
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- STYLE CHUNG CHO CÁC NÚT (THẺ BUTTON VÀ THẺ A) --- */
+.action-buttons button,
+.action-buttons a {
+    display: flex; /* Dùng flex để chữ tự động căn giữa tuyệt đối */
+    justify-content: center;
+    align-items: center;
+    width: 95px; /* Ép cứng chiều rộng 2 nút bằng nhau */
+    height: 40px; /* Ép cứng chiều cao 2 nút bằng nhau */
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    font-size: 15px; /* Ép cùng một cỡ chữ */
+    font-family: inherit; /* Đồng bộ nét chữ (font) cho cả 2 thẻ */
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-decoration: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0; /* Bỏ padding vì đã có width/height cố định */
+}
+
+/* --- HIỆU ỨNG HOVER CHUNG --- */
+.action-buttons button:hover,
+.action-buttons a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+    color: white;
+}
+
+/* --- MÀU SẮC RIÊNG CHO TỪNG NÚT --- */
+.btn-edit {
+    background-color: #007bff;
+}
+.btn-edit:hover {
+    background-color: #0056b3;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+}
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+/* --- STYLE CHO BẢNG EDIT (HIỆU ỨNG SỔ XUỐNG TỪ TỪ) --- */
+.edit-panel {
+    max-height: 0; /* Thu nhỏ chiều cao về 0 */
+    opacity: 0;
+    overflow: hidden; /* Giấu phần nội dung bị tràn */
+    padding: 0 25px; /* Giữ padding ngang để không bị giật form */
+    margin: 0;
+    border: 1px solid transparent;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: max-height 0.5s ease-in-out, opacity 0.4s ease, padding 0.5s ease, margin 0.5s ease, border-color 0.5s ease;
+}
+
+.edit-panel.show {
+    max-height: 800px; /* Tăng thêm chút để chứa cụm nút Role mới */
+    opacity: 1;
+    padding: 25px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-color: #e0e0e0;
+}
+
+.field {
+    margin-bottom: 15px;
+}
+.field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+.field input {
+    width: 100%;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    transition: border-color 0.3s ease;
+}
+.field input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* 🟢 --- CẬP NHẬT: STYLE CHO PHẦN CHỌN ROLE (NÚT BẤM) --- 🟢 */
+.role-selection-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+/* Ẩn radio mặc định */
+.role-selection-group input[type="radio"] {
+    display: none;
+}
+
+.role-selection-group input[type="radio"]:checked + .role-btn {
+    background-color: #007bff !important;
+    color: white !important;
+    border-color: #007bff !important;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+/* Biến Label thành nút bấm */
+.role-btn {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #666;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.role-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #007bff;
+    color: #007bff;
+}
+
+/* Khi Radio được chọn -> Đổi màu Label liền kề */
+.role-selection-group input[type="radio"]:checked + .role-btn {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+/* 🟢 --- STYLE CHO NÚT "LƯU THAY ĐỔI" --- 🟢 */
+.edit-panel button[type="submit"] {
+    display: block;
+    width: 100%;
+    height: 45px;
+    border: none;
+    border-radius: 25px;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    margin-top: 25px;
+}
+
+.edit-panel button[type="submit"]:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
+
+/* --- STYLE CHO MODAL --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    position: relative;
+    animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-submit-green {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    margin-top: 20px;
+    background-color: #28a745;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-submit-green:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #888;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #dc3545;
+}
+
+section-title {
+    margin-top: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    color: #333;
+    font-family: Arial, sans-serif;
+}
+
+.readonly-input {
+    background-color: #f8f9fa !important;
+    cursor: not-allowed;
+}
+
