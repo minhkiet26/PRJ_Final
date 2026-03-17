@@ -51,12 +51,13 @@
                                        placeholder="Confirm password" required="">
                                 <span id="error-msg-confirmpassword" style="color: red; font-size: 12px; display: block;"></span>
                             </div>
+                            
                             <div class="role-container">
                                 <label class="role-option">
-                                    <input type="radio" name="ROLE" value="student" onclick="toggleFullName(true)" required=""> Student
+                                    <input type="radio" name="ROLE" value="Student" onclick="toggleFullName(true)" required=""> Student
                                 </label>
                                 <label class="role-option">
-                                    <input type="radio" name="ROLE" value="teacher" onclick="toggleFullName(true)" required=""> Teacher
+                                    <input type="radio" name="ROLE" value="Teacher" onclick="toggleFullName(true)" required=""> Teacher
                                 </label>
                             </div>
                             <span id="error-msg-role" style="color: red; font-size: 12px; display: block;"></span>

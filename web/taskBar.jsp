@@ -22,24 +22,27 @@
             // Lấy User từ Session 
             User user = (User) session.getAttribute("LOGIN_USER");
         %>
+
         <div class="taskBar">
             <div class="taskBar_menu">
                 <a class="taskBar_menu_btn" href="javascript:void(0)" onclick="openNav()">Menu</a>
                 <div id="mySidebar" class="sidebar">
                     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                     <div class="menu-group">
+                    <div class="menu-group">
                         <h3 class="menu-title">Quản lý đào tạo</h3>
                         <a href="GetCoursesController">Trang chủ</a>
                         <a href="#">Giảng viên</a>
-                         <%
-                                // Lấy đối tượng user từ session đã lưu ở LoginController
-                                if (user != null && "Admin".equals(user.getRole())) {
-                            %>
-                            <a href="UserManagerController">Quản lý người dùng</a>
-                            <a href="LogoutController">Đăng xuất</a>
-                            <%
-                                }
-                            %>
+                        <%
+                            // Lấy đối tượng user từ session đã lưu ở LoginController
+                            if (user != null && "Admin".equals(user.getRole())) {
+                        %>
+                        <a href="UserManagerController">Quản lý người dùng</a>
+                        <a href="BannedUserController">Người dùng bị Ban</a>
+                        <a href="CourseManagerController">Quản lý khóa học</a>
+                        <a href="LogoutController">Đăng xuất</a>                         
+                        <%
+                            }
+                        %>
                     </div>
 
                 </div>
@@ -63,12 +66,12 @@
                     <i class="fa-solid fa-user"></i>
 
                     <div class="dropdown-menu">
-                        <a href="profile.jsp">Thông tin cá nhân</a>
+                        <a href="accountSetting.jsp">Cài đặt tài khoản</a>
                         <a href="MyCourseController">Khóa học</a>
                         <a href="LogoutController">Đăng xuất</a>
-                        <a href="accountSetting.jsp">Cài đặt tài khoản</a>
                     </div>
                 </div>
+
             </div>
             <% } else if (user.getRole().equals("Admin")) {%>
             <div class="user-account" style="display: flex; align-items: center; gap: 10px;">
@@ -77,6 +80,7 @@
                 </div>
             </div>
             <%}%>
+
 
         </div>
 

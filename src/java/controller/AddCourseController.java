@@ -4,43 +4,53 @@
  */
 package controller;
 
-import entities.Student;
-import entities.Teacher;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import services.UserServices;
-import entities.User;
+import services.CourseService;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "UserManagerController", urlPatterns = {"/UserManagerController"})
-public class UserManagerController extends HttpServlet {
+@WebServlet(name = "AddCourseController", urlPatterns = {"/AddCourseController"})
+public class AddCourseController extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try {
-            UserServices Us = new UserServices();
+            String courseName = request.getParameter("CourseName");
+            String teacherID = request.getParameter("TeacherID");
+            String studyTime = request.getParameter("StudyTime");
+            String schedule = request.getParameter("Schedule");
+            String startDateStr = request.getParameter("StartDate");
+//            String Status = request.getParameter("enrollmentStatus");
+            String imageURL = request.getParameter("ImageURL");
+            String description = request.getParameter("Description");
+            String tuitionFeeStr = request.getParameter("TuitionFee");
+            String totalLecturesStr = request.getParameter("TotalLectures");
+            String numberEnrolledStr = request.getParameter("NumberEnrolled");
 
-//            ArrayList<User> list = Us.getAllUser();//lấy hết user
-//            request.setAttribute("LIST_USER", list);//lưu vào req để đưa lên
-            //-------------
-            ArrayList<Student> listS = Us.getAllStudent();//lấy hết student
-            request.setAttribute("LIST_USER_STUDENT", listS);//lưu vào req để đưa lên
-            //------------------
-            ArrayList<Teacher> listT = Us.getAllTeacher();//lấy hết teacher
-            request.setAttribute("LIST_USER_TEACHER", listT);//lưu vào req để đưa lên
- 
-            request.getRequestDispatcher("showUser.jsp").forward(request, response);//chuyển trang
+            CourseService cs = new CourseService();
+            if (cs.AddCourse(courseName, teacherID, studyTime, schedule, startDateStr, imageURL, description, tuitionFeeStr, totalLecturesStr, numberEnrolledStr)) {
+                request.setAttribute("STATUS", "Thêm khóa học thành công!");
+                request.getRequestDispatcher("CourseManagerController").forward(request, response);
+                return;
+            } else {
+                request.setAttribute("STATUS", "Lỗi: Không thể thêm khóa học. Vui lòng kiểm tra lại!");
+                request.getRequestDispatcher("CourseManagerController").forward(request, response);
+                return;
+            }
         } catch (Exception e) {
             e.printStackTrace();
+            request.setAttribute("STATUS", "Đã xảy ra lỗi hệ thống: " + e.getMessage());
+            request.getRequestDispatcher("CourseManagerController").forward(request, response);
         }
     }
 

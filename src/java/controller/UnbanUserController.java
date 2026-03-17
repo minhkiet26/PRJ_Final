@@ -4,41 +4,37 @@
  */
 package controller;
 
-import entities.Student;
-import entities.Teacher;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import services.UserServices;
-import entities.User;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "UserManagerController", urlPatterns = {"/UserManagerController"})
-public class UserManagerController extends HttpServlet {
+@WebServlet(name = "UnbanUserController", urlPatterns = {"/UnbanUserController"})
+public class UnbanUserController extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            UserServices Us = new UserServices();
-
-//            ArrayList<User> list = Us.getAllUser();//lấy hết user
-//            request.setAttribute("LIST_USER", list);//lưu vào req để đưa lên
-            //-------------
-            ArrayList<Student> listS = Us.getAllStudent();//lấy hết student
-            request.setAttribute("LIST_USER_STUDENT", listS);//lưu vào req để đưa lên
-            //------------------
-            ArrayList<Teacher> listT = Us.getAllTeacher();//lấy hết teacher
-            request.setAttribute("LIST_USER_TEACHER", listT);//lưu vào req để đưa lên
- 
-            request.getRequestDispatcher("showUser.jsp").forward(request, response);//chuyển trang
+            String email = request.getParameter("txtEmail");
+            if (email != null && !email.isEmpty()) {
+                UserServices u = new UserServices();
+                if (u.UnbanUser(email)) {
+                    // Sau khi ban dùng Redirect để tránh lỗi lặp lại request khi F5
+                    response.sendRedirect("BannedUserController");
+                    return;
+                }
+            }
+            // Nếu có lỗi hoặc không tìm thấy email thì quay về trang quản lý
+            response.sendRedirect("BannedUserController");
         } catch (Exception e) {
             e.printStackTrace();
         }

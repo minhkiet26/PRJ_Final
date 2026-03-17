@@ -4,41 +4,48 @@
  */
 package controller;
 
-import entities.Student;
-import entities.Teacher;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import services.UserServices;
-import entities.User;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "UserManagerController", urlPatterns = {"/UserManagerController"})
-public class UserManagerController extends HttpServlet {
+@WebServlet(name = "AddUserController", urlPatterns = {"/AddUserController"})
+public class AddUserController extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try {
-            UserServices Us = new UserServices();
+            String Email = request.getParameter("EMAIL");
+            String PassWord = request.getParameter("PASSWORD");
+            String Role = request.getParameter("ROLE");
+            String Name = request.getParameter("FULLNAME");
+            String PhoneNumber = request.getParameter("PHONENUMBER");
 
-//            ArrayList<User> list = Us.getAllUser();//lấy hết user
-//            request.setAttribute("LIST_USER", list);//lưu vào req để đưa lên
-            //-------------
-            ArrayList<Student> listS = Us.getAllStudent();//lấy hết student
-            request.setAttribute("LIST_USER_STUDENT", listS);//lưu vào req để đưa lên
-            //------------------
-            ArrayList<Teacher> listT = Us.getAllTeacher();//lấy hết teacher
-            request.setAttribute("LIST_USER_TEACHER", listT);//lưu vào req để đưa lên
- 
-            request.getRequestDispatcher("showUser.jsp").forward(request, response);//chuyển trang
+            UserServices u = new UserServices();
+            if (u.checkEmail(Email)) {
+                request.setAttribute("errorMessage", "Email đã được sử dụng");
+                //giữ lại nội dung người dùng đã nhập
+                request.setAttribute("oldEmail", Email);
+                request.getRequestDispatcher("UserManagerController").forward(request, response);
+            } else {
+                u.postUser(Email, PassWord, PhoneNumber, Role);
+                if ("student".equalsIgnoreCase(Role)) {
+                    u.postStudent(Name, Email);
+                } else {
+                    u.postTeacher(Name, Email);
+                }
+                request.getRequestDispatcher("UserManagerController").forward(request, response);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

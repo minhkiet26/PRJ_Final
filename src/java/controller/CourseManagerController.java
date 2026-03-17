@@ -4,8 +4,6 @@
  */
 package controller;
 
-import entities.Student;
-import entities.Teacher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -14,31 +12,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import services.UserServices;
-import entities.User;
+import services.CourseService;
+import entities.Course;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "UserManagerController", urlPatterns = {"/UserManagerController"})
-public class UserManagerController extends HttpServlet {
+@WebServlet(name = "CourseManagerController", urlPatterns = {"/CourseManagerController"})
+public class CourseManagerController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            UserServices Us = new UserServices();
-
-//            ArrayList<User> list = Us.getAllUser();//lấy hết user
-//            request.setAttribute("LIST_USER", list);//lưu vào req để đưa lên
-            //-------------
-            ArrayList<Student> listS = Us.getAllStudent();//lấy hết student
-            request.setAttribute("LIST_USER_STUDENT", listS);//lưu vào req để đưa lên
-            //------------------
-            ArrayList<Teacher> listT = Us.getAllTeacher();//lấy hết teacher
-            request.setAttribute("LIST_USER_TEACHER", listT);//lưu vào req để đưa lên
- 
-            request.getRequestDispatcher("showUser.jsp").forward(request, response);//chuyển trang
+            CourseService Course = new CourseService();
+            ArrayList<Course> list = Course.getAllCourse();
+            request.setAttribute("LIST_COURSE", list);
+            request.getRequestDispatcher("showCourse.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

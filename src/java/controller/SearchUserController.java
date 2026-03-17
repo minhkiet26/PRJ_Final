@@ -15,30 +15,30 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import services.UserServices;
-import entities.User;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "UserManagerController", urlPatterns = {"/UserManagerController"})
-public class UserManagerController extends HttpServlet {
+@WebServlet(name = "SearchUserController", urlPatterns = {"/SearchUserController"})
+public class SearchUserController extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            UserServices Us = new UserServices();
-
-//            ArrayList<User> list = Us.getAllUser();//lấy hết user
-//            request.setAttribute("LIST_USER", list);//lưu vào req để đưa lên
-            //-------------
-            ArrayList<Student> listS = Us.getAllStudent();//lấy hết student
-            request.setAttribute("LIST_USER_STUDENT", listS);//lưu vào req để đưa lên
-            //------------------
-            ArrayList<Teacher> listT = Us.getAllTeacher();//lấy hết teacher
-            request.setAttribute("LIST_USER_TEACHER", listT);//lưu vào req để đưa lên
- 
-            request.getRequestDispatcher("showUser.jsp").forward(request, response);//chuyển trang
+            String searchValue = request.getParameter("txtSearch");//nội dung người dùng nhập
+            UserServices us = new UserServices();
+            ArrayList<Teacher> ListT = us.SearchTeacherByName(searchValue);
+            if(ListT != null && !ListT.isEmpty()){
+                request.setAttribute("LIST_TEACHER_SEARCH", ListT);
+            }
+            
+            ArrayList<Student> ListS = us.SearchStudentByName(searchValue);
+            if(ListS != null && !ListS.isEmpty()){
+                request.setAttribute("LIST_STUDENT_SEARCH", ListS);  
+            }
+            request.getRequestDispatcher("showUser.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

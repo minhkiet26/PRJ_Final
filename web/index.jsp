@@ -15,7 +15,6 @@
         
     </head>
     <body>
-        
         <jsp:include page="taskBar.jsp"/>
         <jsp:include page="SlideCart.jsp"/>
     </body>
