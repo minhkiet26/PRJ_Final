@@ -63,7 +63,7 @@ public class LoginController extends HttpServlet {
                 request.getRequestDispatcher("login.jsp").forward(request, response);//chuyển trang để hiển thị lên cho người dùng
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 

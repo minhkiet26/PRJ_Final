@@ -4,7 +4,6 @@
  */
 package services;
 
-import entities.Course;
 import entities.Student;
 import entities.Teacher;
 import entities.User;
@@ -48,7 +47,7 @@ public class UserServices {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
         return u;
     }
@@ -328,6 +327,7 @@ public class UserServices {
                 PreparedStatement st = cn.prepareStatement(sql);
                 st.setString(1, Email);
                 ResultSet table = st.executeQuery();
+
                 if (table.next()) {
                     return true; // Email đã tồn tại
                 }
@@ -590,4 +590,5 @@ public class UserServices {
         }
         return list;
     }
+
 }
