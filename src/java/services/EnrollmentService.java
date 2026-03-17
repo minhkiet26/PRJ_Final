@@ -4,10 +4,14 @@
  */
 package services;
 
+import entities.Enrollment;
+import entities.Student;
+import entities.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import mylib.DBUtils;
 
 /**
@@ -16,7 +20,7 @@ import mylib.DBUtils;
  */
 public class EnrollmentService {
 
-     public String registerCourse(String studentID, String courseID) {
+    public String registerCourse(String studentID, String courseID) {
         Connection cn = null;
         try {
             //Ket noi DB
@@ -32,7 +36,7 @@ public class EnrollmentService {
                 ResultSet table = stCheck.executeQuery();
                 if (table.next()) {
                     String status = table.getString("Status");
-                    
+
                     if (status.equals("Pending") || status.equals("Approved")) {
                         return "Bạn đã đăng ký khóa học này rồi!";
                     } else {
@@ -43,7 +47,7 @@ public class EnrollmentService {
                         stUpdate.setString(1, studentID);
                         stUpdate.setString(2, courseID);
                         int update = stUpdate.executeUpdate();
-                        if(update > 0){
+                        if (update > 0) {
                             return "Đăng ký thành công! Vui lòng chờ Admin duyệt.";
                         }
                     }
@@ -69,7 +73,73 @@ public class EnrollmentService {
         }
         return "Lỗi hệ thống, vui lòng thử lại sau!";
     }
-     
-     
 
+    public ArrayList<Enrollment> getStudentOfCourse(String courseID) {
+        ArrayList<Enrollment> list = new ArrayList();
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "SELECT e.EnrollmentID, s.UserEmail, s.Name, e.RegisterDate "
+                        + "FROM Enrollment e "
+                        + "JOIN Student s ON e.StudentID = s.StudentID "
+                        + "WHERE e.CourseID = ? AND e.Status = 'Pending'";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, courseID);
+                ResultSet table = st.executeQuery();
+                while (table.next()) {
+                    Enrollment e = new Enrollment();
+                    e.setEnrollmentID(table.getString("EnrollmentID"));
+                    e.setRegisterDate(table.getString("RegisterDate"));
+
+                    Student s = new Student();
+                    s.setEmail(table.getString("UserEmail"));
+                    s.setName(table.getString("Name"));
+
+                    e.setStudent(s);
+
+                    list.add(e);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public String approveStudent(String enrollmentID) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "Update Enrollment\n"
+                        + "Set Status = 'Approved', UpdateAt = GETDATE()\n"
+                        + "Where EnrollmentID = ?";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, enrollmentID);
+                st.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Duyệt đơn đăng ký thành công!";
+    }
+    
+    public String rejectStudent(String enrollmentID) {
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "Update Enrollment\n"
+                        + "Set Status = 'Rejected', UpdateAt = GETDATE()\n"
+                        + "Where EnrollmentID = ?";
+                PreparedStatement st = cn.prepareStatement(sql);
+                st.setString(1, enrollmentID);
+                st.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Xử lý thành công! Đã từ chối đơn đăng ký của học viên.";
+    }
 }
