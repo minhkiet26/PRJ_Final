@@ -50,7 +50,7 @@ public class CourseService {
                         String NumberEnrolled = table.getString("NumberEnrolled");
                         String Status = table.getString("Status");
 
-                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, Status);
+                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, Status, null);
                         list.add(c);
                     }
                 }
@@ -88,13 +88,32 @@ public class CourseService {
                     String NumberEnrolled = table.getString("NumberEnrolled");
                     String Status = table.getString("Status");
 
-                    c = new Course(courseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, Status);
+                    c = new Course(courseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, Status, null);
                 }
             }
         } catch (Exception e) {
         }
 
         return c;
+    }
+
+    public String checkEnrollmentStatus(String email, String courseID) {
+        Connection cn = null;
+        String status = null;
+        try {
+            cn = DBUtils.getConnection();
+            String sql = "SELECT Status FROM [Enrollment] WHERE [Email] = ? AND CourseID = ?";
+            PreparedStatement st = cn.prepareStatement(sql);
+            st.setString(1, email);
+            st.setString(2, courseID);
+            ResultSet table = st.executeQuery();
+            if (table != null && table.next()) {
+                status = table.getString("Status");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return status;
     }
 
     public ArrayList<Course> listOfRegisteredCourse(String studentID) {
@@ -132,8 +151,9 @@ public class CourseService {
                         String TeacherID = table.getString("TeacherID");
                         String NumberEnrolled = table.getString("NumberEnrolled");
                         String Status = table.getString("Status");
+                        String EnrollmentStatus = table.getString("EnrollmentStatus");
 
-                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, Status);
+                        Course c = new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, Status, EnrollmentStatus);
                         list.add(c);
                     }
                 }
@@ -289,7 +309,7 @@ public class CourseService {
                         String TeacherID = table.getString("TeacherID");
                         String NumberEnrolled = table.getString("NumberEnrolled");
                         String Status = table.getString("Status");
-                        list.add(new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, Status));
+                        list.add(new Course(CourseID, CourseName, Description, TuitionFee, TeacherID, ImageURL, StudyTime, Schedule, StartDate, TotalLectures, NumberEnrolled, Status, null));
                     }
                 }
             }
@@ -298,4 +318,82 @@ public class CourseService {
         }
         return list;
     }
+
+    public int sumCourse() {
+        int total = 0;
+        Connection cn = null;
+        try {
+            cn = DBUtils.getConnection();
+            if (cn != null) {
+                String sql = "SELECT COUNT(*) AS TotalCourses FROM Course WHERE Status = 'Open'";
+                Statement st = cn.createStatement();
+                ResultSet table = st.executeQuery(sql);
+                //Di chuyển con trỏ vào dòng dữ liệu đầu tiên
+                if (table.next()) {
+                    total = table.getInt("TotalCourses");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+    
+    public boolean updateCourse(Course c) {
+        Connection cn = null;
+        PreparedStatement pst = null;
+        boolean isUpdated = false;
+
+        try {
+            cn = mylib.DBUtils.getConnection();
+            if (cn != null) {
+                // Sử dụng ? để tránh lỗi SQL Injection và dễ truyền tham số
+                String sql = "UPDATE Course \n"
+                        + "SET CourseName = ?, Description = ?, TuitionFee = ?, TeacherID = ?, \n"
+                        + "    ImageURL = ?, StudyTime = ?, Schedule = ?, StartDate = ?, \n"
+                        + "    TotalLectures = ?, NumberEnrolled = ?, Status = ? \n"
+                        + "WHERE CourseID = ?";
+
+                pst = cn.prepareStatement(sql);
+
+                // Gán giá trị theo đúng thứ tự các dấu ? trong câu SQL
+                pst.setString(1, c.getCourseName());
+                pst.setString(2, c.getDescription());
+                pst.setString(3, c.getTuitionFee());
+                pst.setString(4, c.getTeacherID());
+                pst.setString(5, c.getImageURL());
+                pst.setString(6, c.getStudyTime());
+                pst.setString(7, c.getSchedule());
+                pst.setString(8, c.getStartDate());
+                pst.setString(9, c.getTotalLectures());
+                pst.setString(10, c.getNumberEnrolled());
+                pst.setString(11, c.getStatus());
+
+                // Dấu ? thứ 12 là điều kiện WHERE (Quan trọng nhất)
+                pst.setString(12, c.getCourseID());
+
+                // executeUpdate() trả về số dòng bị ảnh hưởng trong DB
+                int rowsAffected = pst.executeUpdate();
+                if (rowsAffected > 0) {
+                    isUpdated = true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Bắt buộc phải đóng kết nối (Close resources) để tránh rò rỉ bộ nhớ (Memory Leak)
+            try {
+                if (pst != null) {
+                    pst.close();
+                }
+                if (cn != null) {
+                    cn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return isUpdated;
+    }
+
 }

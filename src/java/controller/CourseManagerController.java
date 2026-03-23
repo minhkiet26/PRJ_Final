@@ -24,10 +24,14 @@ public class CourseManagerController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try {
             CourseService Course = new CourseService();
+            int total = Course.sumCourse();
             ArrayList<Course> list = Course.getAllCourse();
+            
             request.setAttribute("LIST_COURSE", list);
+            request.setAttribute("TOTAL_COURSE", total);
             request.getRequestDispatcher("showCourse.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

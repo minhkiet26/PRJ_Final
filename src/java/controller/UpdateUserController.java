@@ -23,6 +23,7 @@ public class UpdateUserController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
@@ -35,9 +36,9 @@ public class UpdateUserController extends HttpServlet {
             UserServices us = new UserServices();
             if ("Student".equalsIgnoreCase(role)) {
                 // Lưu ý: Đảm bảo hàm này nhận đúng tham số bạn truyền vào
-                isUpdated = us.updateStudent(email, password, phoneNumber, Name);
+                isUpdated = us.updateStudentV2(email, password, phoneNumber, role, Name);
             } else {
-                isUpdated = us.updateTeacher(email, password, role, phoneNumber, Name);
+                isUpdated = us.updateTeacher(email, password, phoneNumber, role, Name);
             }
 
             if (isUpdated) {

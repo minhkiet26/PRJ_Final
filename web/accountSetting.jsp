@@ -1,8 +1,13 @@
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="entities.Student"%>
 <%@page import="entities.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<c:if test="${sessionScope.LOGIN_USER == null}">
+    <c:redirect url="login.jsp"/>
+</c:if>
+<c:if test="${sessionScope.LOGIN_USER != null}">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -11,10 +16,6 @@
     </head>
     <body>
         <jsp:include page="taskBar.jsp"/>
-        <%
-            User u = (User) request.getAttribute("LOGIN_USER");
-            Student s = (Student) request.getAttribute("LOGIN_USER");
-        %>
 
         <div class="container">
             <div class="account-setting">
@@ -168,3 +169,4 @@
 
     </body>
 </html>
+</c:if>

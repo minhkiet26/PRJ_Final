@@ -160,6 +160,16 @@
 .btn-delete:hover {
     background-color: #c82333;
 }
+/* --- MÀU XANH LÁ CHO NÚT ACCEPT --- */
+.btn-save {
+    background-color: #28a745 !important; /* Màu xanh lá chuẩn */
+}
+
+.btn-save:hover {
+    background-color: #218838 !important; /* Màu xanh đậm hơn khi di chuột vào */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
 
 /* --- STYLE CHO BẢNG EDIT (HIỆU ỨNG SỔ XUỐNG TỪ TỪ) --- */
 .edit-panel {

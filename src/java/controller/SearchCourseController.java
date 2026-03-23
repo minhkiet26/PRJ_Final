@@ -25,6 +25,7 @@ public class SearchCourseController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try {
             String searchValue = request.getParameter("txtSearch");//nội dung người dùng nhập
             CourseService cs = new CourseService();

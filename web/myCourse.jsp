@@ -9,45 +9,43 @@
 <%@page import="entities.Course"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-        <link
-            href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css"
-            rel="stylesheet"
-            />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="stylesheet" href="taskBar.css"/>
-        <link rel="stylesheet" href="my-card-style.css"/>
-    </head>
-    <body>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<c:if test="${sessionScope.LOGIN_USER == null}">
+    <c:redirect url="login.jsp"/>
+</c:if>
+<c:if test="${sessionScope.LOGIN_USER != null}">
+    <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <title>JSP Page</title>
+            <link
+                href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css"
+                rel="stylesheet"
+                />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <link rel="stylesheet" href="taskBar.css"/>
+            <link rel="stylesheet" href="my-card-style.css"/>
+        </head>
+        <body>
+            <jsp:include page="taskBar.jsp"/>
 
-        <%
-            // Lấy User từ Session 
-            Student student = (Student) session.getAttribute("LOGIN_USER");
-        %>
-        <jsp:include page="taskBar.jsp"/>
-        <h1 style="text-align: center; margin: 40px; color: #003366;">Khóa học đã đăng ký</h1>
-        <div class="splide" role="group" aria-label="Splide Basic HTML Example">
-            <div class="splide__track">
-                <ul class="splide__list">
-                    <%
-                        //lấy list từ request
-                        ArrayList<Course> courses = (ArrayList) request.getAttribute("MY_LIST_COURSE");
+            <h1 style="text-align: center; margin: 40px; color: #003366;">Khóa học đã đăng ký</h1>
 
-                        if (courses != null) {
-                            for (Course c : courses) {
+            <div class="course-vertical-container">
+                <%
+                    ArrayList<Course> courses = (ArrayList) request.getAttribute("MY_LIST_COURSE");
+                    boolean hasVisibleCourse = false;
+                    if (courses != null && !courses.isEmpty()) {
+                        for (Course c : courses) {
+                            if (!"Close".equals(c.getStatus())) {
+                                hasVisibleCourse = true;
                                 String imgSrc = c.getImageURL();
                                 if (imgSrc != null && !imgSrc.startsWith("http")) {
                                     imgSrc = "images/" + imgSrc;
                                 }
-
-                                // Bắt đầu thẻ li
-                                out.print("<li class='splide__slide'>");
-                                out.print("<div class='course-item'>");
-
-                                // Thẻ A bao quanh toàn bộ (để làm Flex container)
+                                // Bắt đầu một Item khóa học
+                                out.print("<div class='course-item-vertical'>");
                                 out.print("<a href='GetCourse?courseid=" + c.getCourseID() + "&source=mycourses' class='course-link-wrapper'>");
 
                                 // 1. CỘT TRÁI: Hình ảnh
@@ -57,39 +55,31 @@
 
                                 // 2. CỘT PHẢI: Nội dung
                                 out.print("<div class='course-content'>");
-
-                                // --- QUAN TRỌNG: Thêm div 'course-top-info' bao bọc phần trên ---
                                 out.print("<div class='course-top-info'>");
-
-                                // Tên khóa học
                                 out.print("<h3 class='course-name'>" + c.getCourseName() + "</h3>");
-
-                                // Danh sách thông tin 
                                 out.print("<div class='course-meta-list'>");
                                 out.print("<p><i class='fa-solid fa-book'></i> " + c.getTotalLectures() + " Bài giảng</p>");
                                 out.print("<p><i class='fa-regular fa-calendar-check'></i> Khai giảng: " + c.getStartDate() + "</p>");
                                 out.print("<p><i class='fa-regular fa-calendar-days'></i> Lịch học: " + c.getSchedule() + "</p>");
                                 out.print("<p><i class='fa-regular fa-clock'></i> Giờ học: " + c.getStudyTime() + "</p>");
-                                out.print("</div>"); // Kết thúc course-meta-list
-
-                                out.print("</div>"); // Kết thúc course-top-info (QUAN TRỌNG)
-                                // ---------------------------------------------------------------
+                                out.print("</div>");
+                                out.print("</div>");
 
                                 out.print("<div class='course-bottom'>");
                                 String cssClass = "";
                                 String label = "";
 
                                 if ("Approved".equals(c.getEnrollmentStatus())) {
-                                    cssClass = "status-approved"; // Class màu xanh
+                                    cssClass = "status-approved";
                                     label = "Đã duyệt";
                                 } else if ("Rejected".equals(c.getEnrollmentStatus())) {
-                                    cssClass = "status-rejected"; // Class màu đỏ
+                                    cssClass = "status-rejected";
                                     label = "Từ chối đăng ký";
                                 } else if ("Canceled".equals(c.getEnrollmentStatus())) {
-                                    cssClass = "status-canceled"; //Class mau xam
+                                    cssClass = "status-canceled";
                                     label = "Đã hủy";
                                 } else {
-                                    cssClass = "status-pending"; // Class màu vàng
+                                    cssClass = "status-pending";
                                     label = "Đang chờ đăng ký";
                                 }
                                 out.print("<div class='status-box'>");
@@ -97,39 +87,28 @@
                                 out.print("<i class='fa-solid fa-circle-info'></i> " + label);
                                 out.print("</span>");
                                 out.print("</div>");
-                                out.print("</div>"); // Kết thúc course-bottom
-
-                                out.print("</div>"); // Kết thúc course-content
-                                out.print("</a>"); // Kết thúc thẻ A
-                                out.print("</div>"); // Kết thúc course-item
-                                out.print("</li>"); // Kết thúc li
-
+                                out.print("</div>");
+                                out.print("</div>");
+                                out.print("</a>");
+                                out.print("</div>");
                             }
                         }
-                    %> 
-
-                </ul>
+                    }
+                    if (!hasVisibleCourse) {
+                        out.print("<p style='text-align: center; padding: 40px 20px; background-color: #f8f9fa; border: 1px dashed #dce1e6; border-radius: 12px; color: #5c6a7a; font-size: 16px; margin: 20px;'><i class='fa-solid fa-box-open' style='margin-right: 8px; color: #a1b0c0;'></i>Bạn chưa đăng ký khóa học nào.</p>");
+                    }
+                %> 
             </div>
-        </div> 
 
-
-        <!--    Hien thi thong bao khi bam nut dang ky mon hoc-->
-        <%
-            // Lấy thông báo từ Controller gửi sang
-            String msg = (String) request.getAttribute("NOTI");
-
-            // Nếu có thông báo (Khác null) và không rỗng
-            if (msg != null && !msg.isEmpty()) {
-        %>
-        <script>
-            // Lệnh này sẽ bật một cửa sổ thông báo nhỏ trên trình duyệt
-            alert("<%= msg%>");
-        </script>
-        <%
-            }
-        %>
-
-        <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
-        <script src="MyCart.js"></script>
-    </body>
-</html>
+            <%                String msg = (String) request.getAttribute("NOTI");
+                if (msg != null && !msg.isEmpty()) {
+            %>
+            <script>
+                alert("<%= msg%>");
+            </script>
+            <%
+                }
+            %>
+        </body>
+    </html>
+</c:if>

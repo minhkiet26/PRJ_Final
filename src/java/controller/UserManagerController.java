@@ -26,6 +26,7 @@ public class UserManagerController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try {
             UserServices Us = new UserServices();
 
@@ -37,7 +38,9 @@ public class UserManagerController extends HttpServlet {
             //------------------
             ArrayList<Teacher> listT = Us.getAllTeacher();//lấy hết teacher
             request.setAttribute("LIST_USER_TEACHER", listT);//lưu vào req để đưa lên
- 
+            
+            int total = Us.sumStudent();
+            request.setAttribute("TOTAL_STUDENT", total);
             request.getRequestDispatcher("showUser.jsp").forward(request, response);//chuyển trang
         } catch (Exception e) {
             e.printStackTrace();

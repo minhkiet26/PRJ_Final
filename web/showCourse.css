@@ -48,7 +48,20 @@
 .search-wrapper {
     flex-grow: 1;
 }
+/* --- STYLE CHO Ô TỔNG SỐ SINH VIÊN --- */
+.view_course {
+    justify-self: end; /* Ép dòng chữ sát hẳn về lề bên phải */
+    background-color: #f0f8ff; 
+    padding: 10px 20px;
+    border-radius: 50px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+}
 
+.view_course p {
+    margin: 0;
+    font-weight: bold; 
+    color: #0085FF;
+}
 /* --- HIỆU ỨNG CUỘN TRANG (TỪ TRÁI SANG & RÕ DẦN) --- */
 .user-item {
     opacity: 0; /* Mờ hoàn toàn */

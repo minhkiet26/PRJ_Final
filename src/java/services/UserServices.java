@@ -550,22 +550,24 @@ public class UserServices {
         }
         return list;
     }
-    
-    public int sumStudent(){
+
+    public int sumStudent() {
         int total = 0;
         Connection cn = null;
-        try{
+        try {
             cn = DBUtils.getConnection();
-            if(cn != null){
-                String sql = "SELECT COUNT(*) AS TotalStudents FROM Student";
+            if (cn != null) {
+                String sql = "SELECT COUNT(*) AS TotalStudents \n"
+                        + "FROM [dbo].[User] \n"
+                        + "WHERE Role = 'Student' AND Status = 'Active'";
                 Statement st = cn.createStatement();
                 ResultSet table = st.executeQuery(sql);
                 //Di chuyển con trỏ vào dòng dữ liệu đầu tiên
-                if(table.next()){
+                if (table.next()) {
                     total = table.getInt("TotalStudents");
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return total;

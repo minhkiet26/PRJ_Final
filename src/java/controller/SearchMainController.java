@@ -22,6 +22,7 @@ public class SearchMainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         String url = "";
         String target = request.getParameter("searchTarget");//user || course
 

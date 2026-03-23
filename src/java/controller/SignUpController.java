@@ -21,6 +21,7 @@ public class SignUpController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try {
             String Email = request.getParameter("EMAIL");
             String PassWord = request.getParameter("PASSWORD");
@@ -41,6 +42,7 @@ public class SignUpController extends HttpServlet {
                 } else {
                     u.postTeacher(Name, Email);
                 }
+                response.sendRedirect("login.jsp");
             }
 
         } catch (Exception e) {

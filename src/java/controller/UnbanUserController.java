@@ -23,12 +23,14 @@ public class UnbanUserController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try {
             String email = request.getParameter("txtEmail");
             if (email != null && !email.isEmpty()) {
                 UserServices u = new UserServices();
                 if (u.UnbanUser(email)) {
                     // Sau khi ban dùng Redirect để tránh lỗi lặp lại request khi F5
+                    
                     response.sendRedirect("BannedUserController");
                     return;
                 }

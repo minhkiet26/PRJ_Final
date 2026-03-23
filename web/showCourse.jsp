@@ -3,6 +3,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
+
+<c:if test="${sessionScope.LOGIN_USER == null}">
+    <c:redirect url="login.jsp"/>
+</c:if>
+<c:if test="${sessionScope.LOGIN_USER != null}">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -20,6 +25,16 @@
                         <jsp:param name="searchTarget" value="course"/>
                     </jsp:include>
                 </div>
+                <div class="view_course">
+                    <%
+                        Integer total = (Integer) request.getAttribute("TOTAL_COURSE");
+                        if (total != null) {
+                    %>
+                    <p style="font-weight: bold; color: #0085FF;">Tổng số môn học đang mở: <%= total%></p>
+                    <%
+                        }
+                    %>
+                </div>
             </div>
 
             <h2 class="section-title">Course List</h2>
@@ -34,6 +49,7 @@
                 <div class="user-bar">
                     <div class="user-email"><strong>[Course]</strong> <%= c.getCourseID()%> - <%= c.getCourseName()%></div>
                     <div class="action-buttons">
+                        <button class="btn-edit" onclick="viewStudent('<%= c.getCourseID()%>')">Enrrolled</button>
                         <button class="btn-edit" onclick="toggleEditPanel('edit-course-<%= c.getCourseID()%>')">Edit</button>
                         <% if ("Open".equals(c.getStatus())) {%>
                         <a href="#" onclick="confirmDelete('<%= c.getCourseID()%>')" class="btn-delete">Delete</a>
@@ -81,11 +97,11 @@
                             </div>
                             <div class="field">
                                 <label>Number Enrolled</label>
-                                <input type="text" name="NumberEnrolled" value="<%= c.getNumberEnrolled()%>">
+                                <input type="text" name="NumberEnrolled" value="<%= c.getNumberEnrolled()%>" readonly="">
                             </div>
                             <div class="field">
                                 <label>Status</label>
-                                <input type="text" name="Status" value="<%= c.getStatus()%>">
+                                <input type="text" name="Status" value="<%= c.getStatus()%>" readonly="">
                             </div>
                             <div class="field full-width">
                                 <label>Image URL</label>
@@ -227,8 +243,13 @@
                     window.location.href = "OpenCourseController?courseID=" + courseID;
                 }
             }
+            function viewStudent(courseID) {
+                window.location.href = "ViewPendingStudentsController?txtid=" + courseID;
+            }
         </script>
-
+        
+        <script src="checkEditCourseValid"></script>
+        
         <script src="checkCourseValid.js"></script>
         <c:if test="${not empty sessionScope.STATUS}">
             <script>
@@ -238,3 +259,4 @@
         </c:if>
     </body>
 </html>
+</c:if>

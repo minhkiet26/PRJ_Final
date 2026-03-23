@@ -7,7 +7,12 @@
 <%@page import="entities.Enrollment"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+<c:if test="${sessionScope.LOGIN_USER == null}">
+    <c:redirect url="login.jsp"/>
+</c:if>
+<c:if test="${sessionScope.LOGIN_USER != null}">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -15,6 +20,7 @@
         <link rel="stylesheet" href="showUser.css"> 
     </head>
     <body>
+        <jsp:include page="taskBar.jsp"/>
         <div class="user-list-container">
             <%
                 ArrayList<Enrollment> list = (ArrayList<Enrollment>) request.getAttribute("LIST");
@@ -105,3 +111,4 @@
         </script>
     </body>
 </html>
+</c:if>

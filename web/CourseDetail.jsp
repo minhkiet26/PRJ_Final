@@ -1,7 +1,13 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="entities.User"%>
 <%@page import="entities.Course"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
+<c:if test="${sessionScope.LOGIN_USER == null}">
+    <c:redirect url="login.jsp"/>
+</c:if>
+<c:if test="${sessionScope.LOGIN_USER != null}">
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
@@ -13,7 +19,7 @@
         <link rel="stylesheet" href="course-style.css"> 
     </head>
     <body>
-
+        <jsp:include page="taskBar.jsp"/>
         <%
             // Lấy đối tượng Course từ request
             Course c = (Course) request.getAttribute("COURSE_OBJ");
@@ -25,7 +31,7 @@
                 }
         %>
 
-        <div class="container">
+        <div class="container-detail">
             <div class="main-content">
                 <div class="course-header">
                     <div class="course-meta">Khóa học > <%= c.getTeacherID()%></div> 
@@ -71,27 +77,43 @@
                         %>
                         <%if ("Admin".equals(user.getRole())) {%>
                         <p style="color: #666; font-style: italic; background: #f5f5f5; padding: 10px; border-radius: 5px; text-align: center;">
-                            <i class="fa-solid fa-eye"></i> 
+                            <i class="fa-solid fa-eye"></i> Chế độ xem Admin
                         </p>
                         <%} else {%>
-                            <%if (showCancelBtn) {%>
-                            <form action="CancelCourseController" method="post">
-                                <input type="hidden" name="courseid" value="<%= c.getCourseID()%>">
-
-                                <button type="submit" class="btn-cancel"> 
-                                    Hủy đăng ký môn học
-                                </button>
-                            </form>
-                            <%} else {%>
-                            <form action="RegisterCourseController" method="post">
-                                <input type="hidden" name="courseid" value="<%= c.getCourseID()%>">
-
-                                <button type="submit" class="btn-register"> 
-                                    Đăng ký khóa học
-                                </button>
-                            </form>
-                            <%}%>
-                        <%}%>
+                            <%
+                                // 1. Lấy trạng thái hiện tại của khóa học
+                                String status = c.getEnrollmentStatus();
+                                boolean isCanceled = "Canceled".equals(status);
+                                boolean isRejected = "Rejected".equals(status);
+                                
+                                if (showCancelBtn) { 
+                                    // 2. Nếu trạng thái là Hủy hoặc Từ chối -> Khóa nút lại
+                                    if (isCanceled || isRejected) {
+                            %>
+                                    <button type="button" class="btn-cancel" style="background-color: #9e9e9e; cursor: not-allowed; box-shadow: none;" disabled> 
+                                        <i class="fa-solid fa-ban"></i> Đã <%= isCanceled ? "hủy" : "từ chối" %> đăng ký
+                                    </button>
+                            <%      
+                                    } else { 
+                            %>
+                                    <form action="CancelCourseController" method="post">
+                                        <input type="hidden" name="courseid" value="<%= c.getCourseID()%>">
+                                        <button type="submit" class="btn-cancel"> 
+                                            Hủy đăng ký môn học
+                                        </button>
+                                    </form>
+                            <%      
+                                    } 
+                                } else { 
+                            %>
+                                <form action="RegisterCourseController" method="post">
+                                    <input type="hidden" name="courseid" value="<%= c.getCourseID()%>">
+                                    <button type="submit" class="btn-register"> 
+                                        Đăng ký khóa học
+                                    </button>
+                                </form>
+                            <%  }
+                        } %>
 
                         <ul class="info-list">
                             <li><span class="info-label">Khai giảng</span> <span class="info-value"><%= c.getStartDate()%></span></li>
@@ -139,3 +161,4 @@
 
     </body>
 </html>
+</c:if>

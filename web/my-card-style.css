@@ -1,152 +1,139 @@
-/* 1. Tổng thể Card - Ép chiều cao cố định */
-.course-item {
-    height: 280px !important; /* Chiều cao cố định cho tất cả các thẻ */
+/* ============================================================
+   1. CONTAINER BAO NGOÀI - TẠO KHOẢNG CÁCH VỚI 2 BÊN MÀN HÌNH
+   ============================================================ */
+.course-vertical-container {
+    max-width: 900px; /* Độ rộng vừa phải để đọc thông tin không bị mỏi mắt */
+    margin: 30px auto; /* Căn giữa và tạo khoảng cách 30px trên/dưới */
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Khoảng cách 25px GIỮA CÁC THẺ */
+    padding: 0 20px; /* Khoảng cách 20px VỚI 2 BÊN MÀN HÌNH (khi co nhỏ) */
+}
+
+/* ============================================================
+   2. TỔNG THỂ CARD - NHỎ GỌN HƠN VÀ BẮT ĐẦU HOVER
+   ============================================================ */
+.course-item-vertical {
+    height: 220px; /* Giảm chiều cao xuống một chút cho gọn (Bản cũ 280px hơi cao) */
     display: flex;
     background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
+    border: 1px solid #eee; /* Viền màu nhạt hơn cho tinh tế */
+    border-radius: 16px; /* Bo góc tròn hơn cho hiện đại */
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: all 0.3s ease; /* Thêm độ mượt cho toàn bộ thẻ */
 }
 
-/* Link bao quanh - Quan trọng để chia cột */
+/* --- HIỆU ỨNG HOVER KHI CHẠM CHUỘT VÀO THẺ --- */
+.course-item-vertical:hover {
+    transform: translateY(-5px); /* Nổi lên nhẹ 5px */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12); /* Bóng đổ đậm hơn khi nổi lên */
+    border-color: #007bff; /* Đổi màu viền sang xanh khi hover */
+}
+
 .course-link-wrapper {
-    display: flex !important;
-    flex-direction: row !important;
-    width: 100% !important;
-    height: 100% !important;
-    text-decoration: none !important;
+    display: flex;
+    width: 100%;
+    text-decoration: none;
     color: inherit;
-    align-items: stretch; /* Kéo giãn 2 bên bằng nhau */
 }
 
-/* 2. Cột Hình ảnh (Bên trái) - Chiếm đúng 40% */
+/* ============================================================
+   3. CỘT HÌNH ẢNH (BÊN TRÁI) - CHIẾM 35%
+   ============================================================ */
 .course-thumb {
-    width: 30% !important; 
-    height: 100% !important; /* Luôn cao bằng thẻ cha */
-    position: relative;
+    width: 35%; 
+    height: 100%;
+    flex-shrink: 0;
     overflow: hidden;
-    flex-shrink: 0; /* Không được co lại */
 }
 
 .course-thumb img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important; /* Cắt ảnh vừa khung, không méo */
-    object-position: center;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ảnh không bị méo */
+    transition: transform 0.5s ease; /* Thêm độ mượt khi zoom ảnh */
 }
 
-/* 3. Cột Nội dung (Bên phải) - Chiếm 60% còn lại */
+/* --- HIỆU ỨNG HOVER KHI CHẠM CHUỘT VÀO THẺ (PHÓNG TO ẢNH LIGHT) --- */
+.course-item-vertical:hover .course-thumb img {
+    transform: scale(1.08); /* Phóng to ảnh nhẹ xíu cho sinh động */
+}
+
+/* ============================================================
+   4. CỘT NỘI DUNG (BÊN PHẢI) - CHIẾM 65% VÀ BỐ CỤC THOÁNG
+   ============================================================ */
 .course-content {
-    width: 50% !important;
-    padding: 20px !important;
-    display: flex !important;
-    flex-direction: column !important; /* Xếp dọc từ trên xuống */
-    justify-content: space-between !important; /* Đẩy nội dung ra 2 đầu (trên/dưới) */
-    height: 100% !important;
+    width: 65%;
+    padding: 20px 25px; /* Tăng padding để nội dung thở */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-/* Phần Trên: Tên + Thông tin */
 .course-top-info {
-    flex-grow: 1; /* Chiếm hết khoảng trống để đẩy giá tiền xuống đáy */
+    flex-grow: 1;
 }
 
-/* Tên khóa học - Giới hạn 2 dòng */
 .course-name {
-    font-size: 20px !important; /* Chữ vừa phải thôi, to quá bị tràn */
-    font-weight: 700 !important;
+    font-size: 22px;
+    font-weight: 700;
     color: #002855;
-    margin-bottom: 12px !important;
-    line-height: 1.4 !important;
-    
-    /* Kỹ thuật cắt chữ thừa thành dấu ... */
+    margin-bottom: 10px;
+    line-height: 1.3;
+    /* Cắt chữ nếu tên quá dài (1 dòng) */
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Tối đa 2 dòng */
+    -webkit-line-clamp: 1; 
     -webkit-box-orient: vertical;
     overflow: hidden;
-    height: 56px; /* Cố định chiều cao cho tên (2 dòng * 28px) */
 }
 
-/* List thông tin nhỏ */
 .course-meta-list p {
-    font-size: 14px !important;
-    margin: 6px 0 !important;
-    color: #555 !important;
+    font-size: 15px;
+    margin: 5px 0;
+    color: #666;
     display: flex;
     align-items: center;
+    gap: 10px; /* Khoảng cách giữa Icon và Chữ */
 }
 
 .course-meta-list i {
-    font-size: 16px !important;
-    width: 25px !important;
-    text-align: center;
     color: #007bff;
-    margin-right: 5px;
+    width: 18px; /* Cố định độ rộng icon để căn lề thẳng hàng */
 }
 
-/* Phần Đáy */
+/* ============================================================
+   5. PHẦN ĐÁY & TRẠNG THÁI (STATUS BADGES)
+   ============================================================ */
 .course-bottom {
-    margin-top: auto; /* Đẩy xuống đáy cùng */
-    padding-top: 12px;
-    border-top: 1px solid #eee;
-    
+    display: flex;
+    justify-content: flex-end; /* Đẩy trạng thái sang góc phải */
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 15px;
+}
+
+.status-badge {
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
     display: flex;
     align-items: center;
-    justify-content: flex-end; /* <--- QUAN TRỌNG: Đẩy trạng thái sang góc phải */
-    flex-shrink: 0;
+    gap: 6px;
 }
 
-/* 2. Style chung cho cái Huy hiệu (Badge) */
-.status-badge {
-    display: inline-flex;       /* Để icon và chữ nằm ngang */
-    align-items: center;
-    gap: 6px;                   /* Khoảng cách giữa Icon và Chữ */
-    
-    padding: 6px 14px;          /* Độ mập của nút */
-    border-radius: 50px;        /* Bo tròn như viên thuốc */
-    
-    font-size: 13px;            /* Chữ nhỏ gọn vừa phải */
-    font-weight: 600;           /* Chữ đậm cho dễ đọc */
-    text-transform: uppercase;  /* Viết hoa hết cho sang (tùy chọn) */
-    letter-spacing: 0.5px;
-    
-    transition: all 0.3s ease;
-}
+/* Màu sắc các trạng thái (Sử dụng CSS sạch, không !important) */
+.status-pending { background: #FFF9E1; color: #F57F17; border: 1px solid #FFE082; }
+.status-approved { background: #E8F5E9; color: #2E7D32; border: 1px solid #C8E6C9; }
+.status-rejected { background: #FFEBEE; color: #C62828; border: 1px solid #FFCDD2; }
+.status-canceled { background: #F5F5F5; color: #757575; border: 1px solid #E0E0E0; }
 
-/* 3. Các màu sắc trạng thái (Màu dịu nhẹ hiện đại) */
-
-/* TRẠNG THÁI: ĐANG CHỜ (Màu Vàng Cam) */
-.status-pending {
-    background-color: #fff8e1;  /* Nền vàng nhạt */
-    color: #f57f17;             /* Chữ cam đậm */
-    border: 1px solid #ffe082;  /* Viền nhẹ */
-}
-
-/* TRẠNG THÁI: ĐÃ DUYỆT (Màu Xanh Lá) */
-.status-approved {
-    background-color: #e8f5e9;  /* Nền xanh lá nhạt */
-    color: #2e7d32;             /* Chữ xanh đậm */
-    border: 1px solid #c8e6c9;
-}
-
-/* TRẠNG THÁI: TỪ CHỐI (Màu Đỏ) */
-.status-rejected {
-    background-color: #ffebee;  /* Nền đỏ nhạt */
-    color: #c62828;             /* Chữ đỏ đậm */
-    border: 1px solid #ffcdd2;
-}
-
-/* TRẠNG THÁI: ĐÃ HỦY (Màu Xám) */
-.status-canceled {
-    background-color: #f5f5f5;  /* Nền xám nhạt */
-    color: #757575;             /* Chữ xám đậm */
-    border: 1px solid #e0e0e0;
-}
-
-/* Hiệu ứng khi di chuột vào (cho sinh động) */
-.course-item:hover .status-badge {
-    transform: scale(1.05); /* Phóng to nhẹ xíu khi hover vào thẻ */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+/* 📱 Hỗ trợ di động (Responsive) */
+@media (max-width: 600px) {
+    .course-item-vertical { height: auto; }
+    .course-link-wrapper { flex-direction: column; }
+    .course-thumb { width: 100%; height: 180px; }
+    .course-content { width: 100%; }
 }

@@ -5,6 +5,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
+
+<!DOCTYPE html>
+<c:if test="${sessionScope.LOGIN_USER == null}">
+    <c:redirect url="login.jsp"/>
+</c:if>
+<c:if test="${sessionScope.LOGIN_USER != null}">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -97,7 +103,7 @@
             // Hàm xác nhận Unban
             function confirmUnban(email) {
                 if (confirm("Xác nhận MỞ KHÓA cho người dùng: " + email + "?")) {
-                    window.location.href = "UnbanUserController?email=" + email;
+                    window.location.href = "UnbanUserController?txtEmail=" + email;
                 }
             }
         </script>
@@ -109,3 +115,4 @@
         </c:if>
     </body>
 </html>
+</c:if>

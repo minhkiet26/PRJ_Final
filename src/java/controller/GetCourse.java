@@ -12,37 +12,45 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import services.CourseService;
 import entities.Course;
+import entities.User;
 
 /**
  *
  * @author Admin
  */
 public class GetCourse extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try{
-            String CourseID = request.getParameter("courseid");//lấy id cần           
+        request.setCharacterEncoding("UTF-8");
+        try {
+            String CourseID = request.getParameter("courseid");//lấy id cần 
+            User user = (User) request.getSession().getAttribute("LOGIN_USER");
             CourseService d = new CourseService();
             Course c = d.getCourse(CourseID);
+            if (user != null && c != null) {
+                String myStatus = d.checkEnrollmentStatus(user.getEmail(), CourseID);
+                c.setEnrollmentStatus(myStatus); // Đắp trạng thái vào Object Course
+            }
             //lưu vào req
             request.setAttribute("COURSE_OBJ", c);
-            
+
             String source = request.getParameter("source");
             //bien la co
             boolean showCacelBtn = false;
-            
+
             //Chỉ khi nào có tín hiệu "mycourses" thì mới bật nút Hủy
-            if("mycourses".equals(source)){
+            if ("mycourses".equals(source)) {
                 showCacelBtn = true;
             }
-            
+
             //Gửi request biến này sang JSP
             request.setAttribute("SHOW_CANCEL_BTN", showCacelBtn);
-            
+
             //đẩy lên CourseDetails để in kết quả
             request.getRequestDispatcher("CourseDetail.jsp").forward(request, response);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

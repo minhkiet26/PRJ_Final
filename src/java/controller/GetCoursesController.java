@@ -21,6 +21,7 @@ public class GetCoursesController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
         try {
             //gọi xuống service để lấy danh sách môn
             CourseService d = new CourseService();
